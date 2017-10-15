@@ -1,0 +1,10 @@
+<div class = "form-container" *ngIf="authService.currentUser">
+	<h2 class="text-primary">Informações do usuário</h2>
+	<h4>
+		<strong>UID:</strong> {{ authService.currentUserId }}
+	</h4>
+	<h4>
+		<strong>Email:</strong> {{ authService.currentUserName }}
+	</h4>
+	<button class="button" (click)="logout()">Deslogar</button>
+</div>

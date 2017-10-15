@@ -1,0 +1,30 @@
+<div class = "form-container">
+	<h2>Historical Battle</h2>
+	
+	<div style="width: 350px;">
+
+		<p *ngIf="errorMessage.length > 0" class="text-danger">
+			{{errorMessage}}</p>
+
+		<p *ngIf="error.message.length > 0" class="text-danger">
+			{{error.message}}</p>
+
+		<form (ngSubmit)="onSignUp()">
+			<div class="form-group">
+				<label for="email">Email</label> <input type="email"
+					class="form-control" id="email" name="email" required
+					[(ngModel)]="email">
+			</div>
+
+			<div class="form-group">
+				<label for="password">Senha</label> <input type="password"
+					class="form-control" id="password" name="password" required
+					[(ngModel)]="password">
+			</div>
+
+			<button type="submit" class="btn btn-success">Criar minha conta!</button>
+		</form>
+
+		<a routerLink="/login" class="alc">Já possui uma conta?</a>
+	</div>
+</div>
