@@ -1,3 +1,56 @@
 h2{
 	text-align: center;
 }
+
+.form-container{
+	border-radius: 25px;
+	background-color: rgba(255, 255, 255, 0.6);
+	padding-bottom: 0px !important;
+	padding-top: 10px !important;
+}
+
+img{
+	width:500px;
+	height:250px;
+	display: block;
+    margin: 0 auto;
+}
+
+@keyframes cf3FadeInOut {
+  0% {
+  opacity:1;
+}
+45% {
+opacity:1;
+}
+55% {
+opacity:0;
+}
+100% {
+opacity:0;
+}
+}
+
+#cf3 {
+  position:relative;
+  height:281px;
+  width:450px;
+  margin:0 auto;
+}
+
+#cf3 img {
+  position:absolute;
+  left:0;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+
+#cf3 img.top {
+animation-name: cf3FadeInOut;
+animation-timing-function: ease-in-out;
+animation-iteration-count: infinite;
+animation-duration: 0.1s;
+animation-direction: alternate;
+}
