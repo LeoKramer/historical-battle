@@ -32,7 +32,7 @@ export class UserLoginComponent implements OnInit {
 
     if (this.validateForm(this.email, this.password)) {
       this.authService.loginWithEmail(this.email, this.password)
-        .then(() => this.router.navigate(['/user']))
+        .then(() => this.router.navigate(['/menu']))
         .catch(_error => {
           this.error = _error
           this.router.navigate(['/'])

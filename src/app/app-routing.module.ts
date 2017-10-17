@@ -5,11 +5,15 @@ import {UserLoginComponent} from './auth/user-login/user-login.component';
 import {UserInfoComponent} from './auth/user-info/user-info.component';
 import {UserSignupComponent} from './auth/user-signup/user-signup.component';
 
+import {MainMenuComponent} from './menu/main-menu/main-menu.component';
+import {DeckMenuComponent} from './menu/deck-menu/deck-menu.component';
+
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: UserLoginComponent},
-  {path: 'user', component: UserInfoComponent},
-  {path: 'signup', component: UserSignupComponent}
+  {path: 'menu', component: MainMenuComponent},
+  {path: 'signup', component: UserSignupComponent},
+  {path: 'decks', component: DeckMenuComponent}
 ];
 
 @NgModule({

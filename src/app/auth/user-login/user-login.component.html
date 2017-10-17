@@ -1,32 +1,36 @@
-<div id="cf3" class="logo-header">
-  <img class="bottom" src="assets/images/placa_1.png" />
-  <img class="top" src="assets/images/placa_2.png" />
-</div>
-<div class = "form-container">
-	<div style="width: 350px;">
-
-		<p *ngIf="errorMessage.length > 0" class="text-danger">
-			{{errorMessage}}</p>
-			
-		<p *ngIf="error.message.length > 0" class="text-danger">
-			{{error.message}}</p>
-
-		<form (ngSubmit)="onLoginEmail()">
-			<div class="form-group">
-				<label for="email">Email</label> <input type="text"
-					class="form-control" id="email" name="email" required
-					[(ngModel)]="email">
-			</div>
-
-			<div class="form-group">
-				<label for="password">Senha</label> <input type="password"
-					class="form-control" id="password" name="password" required
-					[(ngModel)]="password">
-			</div>
-
-			<button type="submit" class="btn btn-success">Logar</button>
-		</form>
-
-		<a routerLink="/signup" class="alc">Não possui uma conta?</a>
+<div class="login-page">
+	
+	<div id="cf3" class="logo-header">
+	  <img class="bottom" src="assets/images/placa_1.png" />
+	  <img class="top" src="assets/images/placa_2.png" />
 	</div>
+	<div class = "form-container">
+		<div>
+
+			<p *ngIf="errorMessage.length > 0" class="text-danger">
+				{{errorMessage}}</p>
+				
+			<p *ngIf="error.message.length > 0" class="text-danger">
+				{{error.message}}</p>
+
+			<form (ngSubmit)="onLoginEmail()">
+				<div class="form-group">
+					<label for="email">Email</label> <input type="text"
+						class="form-control" id="email" name="email" required
+						[(ngModel)]="email">
+				</div>
+
+				<div class="form-group">
+					<label for="password">Senha</label> <input type="password"
+						class="form-control" id="password" name="password" required
+						[(ngModel)]="password">
+				</div>
+
+				<button type="submit" class="btn btn-success">Logar</button>
+			</form>
+
+			<a routerLink="/signup" class="alc">Não possui uma conta?</a>
+		</div>
+	</div>
+
 </div>

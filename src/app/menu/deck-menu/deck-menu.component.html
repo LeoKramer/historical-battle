@@ -1,0 +1,27 @@
+<div class = "deck-page" *ngIf="authService.currentUser">
+	<div class="user-options">
+		Bem vindo, {{ authService.currentUserName }}
+		<button id="btn-deslogar" type="button" class="btn btn-danger" (click)="logout()">Deslogar</button>
+	</div>
+	<div class="tab">
+		<ul class="nav nav-tabs">
+		  <li class="nav-item">
+		    <a class="nav-link" routerLink="/menu">Jogar</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link active">Baralhos</a>
+		  </li>
+		</ul>
+	</div>
+	<div class="menu-deck">
+		<h2>Selecione um baralho</h2>
+		<div class="deck-grid">
+			<div class="deck-image"><h4>Nome do baralho</h4><img src="assets/images/placeholder_addDeck.png"/></div>
+			<div class="deck-image"><h4>Nome do baralho</h4><img src="assets/images/placeholder_addDeck.png"/></div>
+			<div class="deck-image"><h4>Nome do baralho</h4><img src="assets/images/placeholder_addDeck.png"/></div>
+			<div class="deck-image"><h4>Nome do baralho</h4><img src="assets/images/placeholder_addDeck.png"/></div>
+			<div class="deck-image"><h4>Nome do baralho</h4><img src="assets/images/placeholder_addDeck.png"/></div>
+		</div>
+		<button id="btn-baralho-padrao" type="button" class="btn btn-success">Escolher baralho padrão</button>
+	</div>
+</div>

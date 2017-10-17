@@ -1,5 +1,14 @@
+.login-page{
+  padding-top: 4em !important;
+}
+
 h2{
   text-align: center;
+}
+
+button{
+  width: 60%;
+  margin-left: 20%;
 }
 
 .form-container{
