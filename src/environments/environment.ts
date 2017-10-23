@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  firebase: {
+  firebaseConfig: {
     apiKey: "AIzaSyD7xf5BMk-yRq8aNUhdwUEoRs7M8cT1Df8",
     authDomain: "historical-battle.firebaseapp.com",
     databaseURL: "https://historical-battle.firebaseio.com",

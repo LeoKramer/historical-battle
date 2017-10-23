@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService} from '../auth.service';
 import { moveIn, fallIn } from '../../router.animations';
+import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'user-signup',
@@ -17,7 +20,7 @@ export class UserSignupComponent implements OnInit {
   errorMessage = '';
   error: {name: string, message: string} = {name: '', message: ''};
 
-  constructor(public authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router, private afs : AngularFirestore) {}
 
   ngOnInit() {
   }
@@ -32,14 +35,13 @@ export class UserSignupComponent implements OnInit {
 
     if (this.validateForm(this.email, this.password)) {
       this.authService.signUpWithEmail(this.email, this.password)
-        .then(() => {
-          this.router.navigate(['/login'])
-        }).catch(_error => {
+        .then(() => this.router.navigate(['/login']))
+        .catch(_error => {
           this.error = _error
         })
     }
   }
-  
+
   validateForm(email: string, password: string): boolean {
     if (email.length === 0) {
       this.errorMessage = 'Insira um Email!'

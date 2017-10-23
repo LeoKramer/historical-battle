@@ -7,8 +7,11 @@ import {AppRoutingModule} from './app-routing.module';
 
 import {AngularFireModule} from 'angularfire2';
 import {AngularFireAuthModule} from 'angularfire2/auth';
-
+import { AngularFireDatabase } from 'angularfire2/database';
 import {AuthService} from './auth/auth.service';
+
+export const firebaseConfig = environment.firebaseConfig;
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import {AppComponent} from './app.component';
 import {UserLoginComponent} from './auth/user-login/user-login.component';
@@ -31,10 +34,11 @@ import {DeckMenuComponent} from './menu/deck-menu/deck-menu.component';
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule,
+    AngularFirestoreModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, AngularFireDatabase],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
