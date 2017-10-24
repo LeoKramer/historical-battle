@@ -14,6 +14,19 @@ interface Users{
   deck5: string;
 }
 
+interface Cards{
+  attack: number;
+  cost: number;
+  life: number;
+  name: string;
+  rarity: number;
+  Effects;
+}
+
+interface Effects{
+  [effects: string] : string;
+}
+
 @Component({
   selector: 'main-menu',
   templateUrl: './main-menu.component.html',
@@ -23,14 +36,23 @@ export class MainMenuComponent implements OnInit {
 
 	userDoc: AngularFirestoreDocument<Users>;
 
+  cardsCollectionRef: AngularFirestoreCollection<Cards>;
+  cards$: Observable<Cards[]>;
+  cards: Object;
+
   constructor(public authService: AuthService, private afs : AngularFirestore) {
+    this.cardsCollectionRef = this.afs.collection<Cards>('cards');
+    this.cards$ = this.cardsCollectionRef.snapshotChanges().map(actions => {
+      return actions.map(action => {
+        const data = action.payload.doc.data() as Cards;
+        const id = action.payload.doc.id;
+        return { id, ...data };
+      });
+    });
+    this.cards$.subscribe(data => {this.cards=data;console.log(this.cards);console.log(this.cards[0]['effects'][0])});
+
     if(this.userDoc == null)
-			this.afs.collection('users').doc(this.authService.currentUserId).set({ 
-        'deck1': "vazio",
-        'deck2': "vazio",
-        'deck3': "vazio",
-        'deck4': "vazio",
-        'deck5': "vazio"});
+      this.firstLogin();
   }
 
   ngOnInit() {
@@ -39,5 +61,14 @@ export class MainMenuComponent implements OnInit {
 
   logout() {
     this.authService.signOut();
+  }
+
+  firstLogin() : void{
+    this.afs.collection('users').doc(this.authService.currentUserId).set({ 
+        'deck1': "vazio",
+        'deck2': "vazio",
+        'deck3': "vazio",
+        'deck4': "vazio",
+        'deck5': "vazio"});
   }
 }
