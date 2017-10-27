@@ -15,13 +15,16 @@
 	</div>
 	<div class="menu-deck">
 		<h2>Selecione um baralho</h2>
-		<div class="deck-grid">
-			<div class="deck-image"><h4>Deck 1</h4><img src="assets/images/placeholder_addDeck.png" id="imgDeck1"/></div>
-			<div class="deck-image"><h4>Deck 2</h4><img src="assets/images/placeholder_addDeck.png"/></div>
-			<div class="deck-image"><h4>Deck 3</h4><img src="assets/images/placeholder_addDeck.png"/></div>
-			<div class="deck-image"><h4>Deck 4</h4><img src="assets/images/placeholder_addDeck.png"/></div>
-			<div class="deck-image"><h4>Deck 5</h4><img src="assets/images/placeholder_addDeck.png"/></div>
+		<div class="alert alert-info" role="alert" [hidden] = "!chooseDefaultDeckTime" id="alert">
+  			<strong>Clique em um baralho para torná-lo padrão!</strong>
 		</div>
-		<button id="btn-baralho-padrao" type="button" class="btn btn-success">Escolher baralho padrão</button>
+		<div class="deck-grid">
+			<div class="deck-image"><h4>Deck 1</h4><img [src]= "deck1ImagePath" id="deck1" (click)="checkClickDeck1()"/></div>
+			<div class="deck-image"><h4>Deck 2</h4><img [src]= "deck2ImagePath" id="deck2" (click)="checkClickDeck2()"/></div>
+			<div class="deck-image"><h4>Deck 3</h4><img [src]= "deck3ImagePath" id="deck3" (click)="checkClickDeck3()"/></div>
+			<div class="deck-image"><h4>Deck 4</h4><img [src]= "deck4ImagePath" id="deck4" (click)="checkClickDeck4()"/></div>
+			<div class="deck-image"><h4>Deck 5</h4><img [src]= "deck5ImagePath" id="deck5" (click)="checkClickDeck5()"/></div>
+		</div>
+		<button id="btn-baralho-padrao" type="button" class="btn btn-success" (click)="defaultDeck()" [disabled] = "chooseDefaultDeckTime">Escolher baralho padrão</button>
 	</div>
 </div>

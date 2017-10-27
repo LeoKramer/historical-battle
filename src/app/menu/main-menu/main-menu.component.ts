@@ -57,6 +57,7 @@ interface Effects{
 export class MainMenuComponent implements OnInit {
 
 	userDoc: AngularFirestoreDocument<Users>;
+  user$ : Observable<Users>;
 
   cardsCollectionRef: AngularFirestoreCollection<Cards>;
   cards$: Observable<Cards[]>;
@@ -72,13 +73,19 @@ export class MainMenuComponent implements OnInit {
       });
     });
 
-    if(this.userDoc == null){
-      this.cards$.subscribe(data => {this.cards=data;this.firstLogin(this.cards);});
-    }
+    this.userDoc = this.afs.doc('users/'+this.authService.currentUserId);
+    this.user$ = this.userDoc.valueChanges();
+    this.user$.subscribe(data => {
+      if(this.userDoc == null){
+          console.log("primeiro login");
+          this.cards$.subscribe(data => {this.cards=data;this.firstLogin(this.cards);});
+        }
+    });
+        
+    
   }
 
   ngOnInit() {
-  	this.userDoc = this.afs.doc('users/'+this.authService.currentUserId);
   }
 
   logout() {
