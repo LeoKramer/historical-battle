@@ -12,6 +12,7 @@ interface Users{
   Deck3;
   Deck4;
   Deck5;
+  AccountCards;
   gold: number;
   defaultDeck: string;
 }
@@ -34,6 +35,10 @@ interface Deck4{
 
 interface Deck5{
   [deck5: string] : string;
+}
+
+interface AccountCards{
+  [accountCards : string] : string;
 }
 
 interface Cards{
@@ -76,7 +81,8 @@ export class MainMenuComponent implements OnInit {
     this.userDoc = this.afs.doc('users/'+this.authService.currentUserId);
     this.user$ = this.userDoc.valueChanges();
     this.user$.subscribe(data => {
-      if(this.userDoc == null){
+      console.log("checking account");
+      if(data == null){
           console.log("primeiro login");
           this.cards$.subscribe(data => {this.cards=data;this.firstLogin(this.cards);});
         }
@@ -134,6 +140,11 @@ export class MainMenuComponent implements OnInit {
         'deck3': ["vazio"],
         'deck4': ["vazio"],
         'deck5': ["vazio"],
+        'accountCards': [deck1Cards[0], deck1Cards[1], deck1Cards[2], deck1Cards[3], deck1Cards[4], deck1Cards[5],
+                  deck1Cards[6], deck1Cards[7], deck1Cards[8], deck1Cards[9], deck1Cards[10], deck1Cards[11],
+                  deck1Cards[12], deck1Cards[13], deck1Cards[14], deck1Cards[15], deck1Cards[16], deck1Cards[17],
+                  deck1Cards[18], deck1Cards[19], deck1Cards[20], deck1Cards[21], deck1Cards[22], deck1Cards[23],
+                  deck1Cards[24], deck1Cards[25], deck1Cards[26], deck1Cards[27], deck1Cards[28], deck1Cards[29]],
         'gold': 0,
         'defaultDeck': 'deck1'});
   }

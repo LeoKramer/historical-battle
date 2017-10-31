@@ -1,0 +1,49 @@
+.upper-tab{
+	width: 10%;
+	display: inline-block;
+}
+
+h2{
+	text-align: center;
+	margin: 0px !important;
+}
+
+.deck-page{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(55, 55, 55, 1);
+	color: rgb(255,255,255);
+}
+
+.user-options{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	text-align: left;
+}
+
+#btn-deslogar{
+	width: 10%;
+	float: right;
+	margin-bottom: 0px;
+	z-index: 1;
+}
+
+.editDeckContainer{
+	text-align: center;
+	margin : 0;
+}
+
+.allCards{
+	border: 2px solid white;
+}
+
+.deckCards{
+	border: 2px solid white;
+}
+
+.selectedCard{
+	border: 2px solid white;
+}

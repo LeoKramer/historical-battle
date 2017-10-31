@@ -1,10 +1,12 @@
 import {Component, OnInit, AfterViewInit} from '@angular/core';
 import {AuthService} from '../../auth/auth.service';
+import {Router} from '@angular/router';
 import { moveIn, fallIn } from '../../router.animations';
 import { AngularFireDatabase } from 'angularfire2/database';
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { DataService } from "../data.service";
 
 interface Users{
   Deck1;
@@ -12,8 +14,33 @@ interface Users{
   Deck3;
   Deck4;
   Deck5;
+  AccountCards;
   gold: number;
   defaultDeck: string;
+}
+
+interface Deck1{
+  [deck1: string] : string;
+}
+
+interface Deck2{
+  [deck2: string] : string;
+}
+
+interface Deck3{
+  [deck3: string] : string;
+}
+
+interface Deck4{
+  [deck4: string] : string;
+}
+
+interface Deck5{
+  [deck5: string] : string;
+}
+
+interface AccountCards{
+  [accountCards : string] : string;
 }
 
 @Component({
@@ -35,13 +62,16 @@ export class DeckMenuComponent implements OnInit{
 
 	chooseDefaultDeckTime : boolean = false;
 
-  constructor(public authService: AuthService, private afs : AngularFirestore) {
+  editDeck:string;
+
+  constructor(public authService: AuthService, private afs : AngularFirestore, private router: Router, private data: DataService) {
     this.userDoc = this.afs.doc('users/'+this.authService.currentUserId);
     this.user$ = this.userDoc.valueChanges();
     this.user$.subscribe(data => {this.user = data; this.loadDecksInfo(data);});
   }
 
   ngOnInit() {
+    this.data.currentMessage.subscribe(message => this.editDeck = message)
   }
 
   logout() {
@@ -110,8 +140,10 @@ export class DeckMenuComponent implements OnInit{
   checkClickDeck1() : void{
   	if(this.chooseDefaultDeckTime)
   		this.chooseDefaultDeck("deck1");
-  	else
-  		console.log("edit deck");		
+  	else{
+      this.data.changeMessage("deck1");
+      this.router.navigate(['/edit']);
+    }
   }
 
   checkClickDeck2() : void{

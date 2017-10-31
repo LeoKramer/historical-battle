@@ -1,0 +1,28 @@
+<div class = "deck-page" *ngIf="authService.currentUser">
+	<div class="editDeckContainer">
+		<div class="row">
+			<div class="user-options col-12">
+				Bem vindo, {{ authService.currentUserName }}
+				<button id="btn-deslogar" type="button" class="btn btn-danger" (click)="logout()">Deslogar</button>
+			</div>
+			<div class="col-3 allCards">
+			  Todas as cartas
+			</div>
+			<div class="col-6 selectedCard">
+				Carta selecionada
+			</div>
+			<div class="col-3 deckCards">
+			  Cartas do baralho
+			</div>
+			<div class="col-3 allCards">
+				lorem ipsum
+			</div>
+			<div class="col-6 selectedCard">
+				lorem ipsum
+			</div>
+			<div class="col-3 deckCards">
+				lorem ipsum
+			</div>
+		</div>
+	</div>
+</div>

@@ -19,6 +19,9 @@ import {UserInfoComponent} from './auth/user-info/user-info.component';
 import {UserSignupComponent} from './auth/user-signup/user-signup.component';
 import {MainMenuComponent} from './menu/main-menu/main-menu.component';
 import {DeckMenuComponent} from './menu/deck-menu/deck-menu.component';
+import {EditDeckComponent} from './menu/edit-deck/edit-deck.component';
+
+import {DataService} from './menu/data.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,8 @@ import {DeckMenuComponent} from './menu/deck-menu/deck-menu.component';
     UserInfoComponent,
     UserSignupComponent,
     MainMenuComponent,
-    DeckMenuComponent
+    DeckMenuComponent,
+    EditDeckComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -38,7 +42,7 @@ import {DeckMenuComponent} from './menu/deck-menu/deck-menu.component';
     AngularFireAuthModule,
     AngularFirestoreModule
   ],
-  providers: [AuthService, AngularFireDatabase],
+  providers: [AuthService, AngularFireDatabase, DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
