@@ -40,10 +40,88 @@ h2{
 	border: 2px solid white;
 }
 
+#allCardsList{
+	height: 80vh;
+	overflow: scroll;
+}
+
+#deckCardsList{
+	max-height: 80vh;
+	overflow: scroll;
+}
+
 .deckCards{
 	border: 2px solid white;
 }
 
 .selectedCard{
 	border: 2px solid white;
+}
+
+#eachCard{
+	border: 2px solid white;
+	margin: 5px;
+}
+
+img{
+	position: absolute;
+	left: 25%;
+	width: 50%;
+	height: 70%;
+	margin-top: 3%;
+}
+
+#cardChar{
+	position: absolute;
+	left: 25%;
+	top: 2%;
+	width: 50%;
+	height: 70%;
+	margin-top: 0% !important;
+}
+
+#numberOfDeckCards{
+	border: 2px solid white;
+	margin: 5px;
+}
+
+#btn-cancelar{
+	width: 30%;
+	float: left;
+}
+
+#btn-salvar{
+	width: 30%;
+	float: right;
+}
+
+#buttons{
+	margin-top: 75%;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+ }
+ 
+ .overlay-image-1 {
+  z-index: -1;
+}
+
+.overlay-image-2 {
+  z-index: -2;
+}
+
+.overlay-image-3 {
+  z-index: -3;
+}
+
+.overlay-image-4 {
+  z-index: -4;
+}
+.background-cover {
+  background-size: cover;
+  background-position: 0 50%;
+  background-repeat: no-repeat;
 }

@@ -141,37 +141,65 @@ export class DeckMenuComponent implements OnInit{
   	if(this.chooseDefaultDeckTime)
   		this.chooseDefaultDeck("deck1");
   	else{
-      this.data.changeMessage("deck1");
-      this.router.navigate(['/edit']);
+      if(this.checkValid(this.user, "deck1")){
+        this.data.changeMessage("deck1");
+        this.router.navigate(['/edit']);
+      }
+      else
+        console.log("criar baralho");  
     }
   }
 
   checkClickDeck2() : void{
   	if(this.chooseDefaultDeckTime)
   		this.chooseDefaultDeck("deck2");
-  	else
-  		console.log("edit deck");		
+  	else{
+      if(this.checkValid(this.user, "deck2")){
+        this.data.changeMessage("deck1");
+        this.router.navigate(['/edit']);
+      }
+      else
+        console.log("criar baralho"); 
+    }		
   }
 
   checkClickDeck3() : void{
   	if(this.chooseDefaultDeckTime)
   		this.chooseDefaultDeck("deck3");
-  	else
-  		console.log("edit deck");		
+  	else{
+      if(this.checkValid(this.user, "deck3")){
+        this.data.changeMessage("deck1");
+        this.router.navigate(['/edit']);
+      }
+      else
+        console.log("criar baralho");
+    } 		
   }
 
   checkClickDeck4() : void{
   	if(this.chooseDefaultDeckTime)
   		this.chooseDefaultDeck("deck4");
-  	else
-  		console.log("edit deck");		
+  	else{
+      if(this.checkValid(this.user, "deck4")){
+        this.data.changeMessage("deck1");
+        this.router.navigate(['/edit']);
+      }
+      else
+        console.log("criar baralho");
+    }		
   }
 
   checkClickDeck5() : void{
   	if(this.chooseDefaultDeckTime)
   		this.chooseDefaultDeck("deck5");
-  	else
-  		console.log("edit deck");		
+  	else{
+      if(this.checkValid(this.user, "deck5")){
+        this.data.changeMessage("deck1");
+        this.router.navigate(['/edit']);
+      }
+      else
+        console.log("criar baralho");
+    }	
   }
 
   defaultDeck(): void{

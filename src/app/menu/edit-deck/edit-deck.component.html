@@ -1,6 +1,6 @@
 <div class = "deck-page" *ngIf="authService.currentUser">
 	<div class="editDeckContainer">
-		<div class="row">
+		<div class="row" style="height : 100%;">
 			<div class="user-options col-12">
 				Bem vindo, {{ authService.currentUserName }}
 				<button id="btn-deslogar" type="button" class="btn btn-danger" (click)="logout()">Deslogar</button>
@@ -14,14 +14,30 @@
 			<div class="col-3 deckCards">
 			  Cartas do baralho
 			</div>
-			<div class="col-3 allCards">
-				lorem ipsum
+			<div class="col-3 allCards" id="allCardsList">
+				<div *ngFor="let name of accountCardsNamesList" (click)="selectAccountCard(name)" (mouseenter)="showCardInfo(name)" id="eachCard">
+			      {{ name }}
+			  </div>
 			</div>
 			<div class="col-6 selectedCard">
-				lorem ipsum
+				<div id="numberOfDeckCards">Cartas do baralho: {{numberOfDeckCards}}</div>
+				<div class="overlay-image-4 background-cover"><img [src]= "cardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "cardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "cardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "cardVoid"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "cardChar" id="cardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "cardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "cardMarkers"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "cardName"></div>
+				<div id="buttons">
+					<button id="btn-cancelar" type="button" class="btn btn-danger" (click)="cancel()">Cancelar</button>
+					<button id="btn-salvar" type="button" class="btn btn-success" (click)="saveDeck()" [disabled] = "disableSaveDeck">Salvar</button>
+				</div>
 			</div>
-			<div class="col-3 deckCards">
-				lorem ipsum
+			<div class="col-3 deckCards" id="deckCardsList">
+				<div *ngFor="let name of deckCardsNamesList" (click)="selectDeckCard(name)" (mouseenter)="showCardInfo(name)" id="eachCard">
+			      {{ name }}
+			  </div>
 			</div>
 		</div>
 	</div>
