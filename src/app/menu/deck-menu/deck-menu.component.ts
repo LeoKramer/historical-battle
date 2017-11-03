@@ -141,12 +141,8 @@ export class DeckMenuComponent implements OnInit{
   	if(this.chooseDefaultDeckTime)
   		this.chooseDefaultDeck("deck1");
   	else{
-      if(this.checkValid(this.user, "deck1")){
-        this.data.changeMessage("deck1");
-        this.router.navigate(['/edit']);
-      }
-      else
-        console.log("criar baralho");  
+      this.data.changeMessage("deck1");
+      this.router.navigate(['/edit']);
     }
   }
 
@@ -154,12 +150,8 @@ export class DeckMenuComponent implements OnInit{
   	if(this.chooseDefaultDeckTime)
   		this.chooseDefaultDeck("deck2");
   	else{
-      if(this.checkValid(this.user, "deck2")){
-        this.data.changeMessage("deck1");
-        this.router.navigate(['/edit']);
-      }
-      else
-        console.log("criar baralho"); 
+      this.data.changeMessage("deck2");
+      this.router.navigate(['/edit']);
     }		
   }
 
@@ -167,12 +159,8 @@ export class DeckMenuComponent implements OnInit{
   	if(this.chooseDefaultDeckTime)
   		this.chooseDefaultDeck("deck3");
   	else{
-      if(this.checkValid(this.user, "deck3")){
-        this.data.changeMessage("deck1");
-        this.router.navigate(['/edit']);
-      }
-      else
-        console.log("criar baralho");
+      this.data.changeMessage("deck3");
+      this.router.navigate(['/edit']);
     } 		
   }
 
@@ -180,25 +168,17 @@ export class DeckMenuComponent implements OnInit{
   	if(this.chooseDefaultDeckTime)
   		this.chooseDefaultDeck("deck4");
   	else{
-      if(this.checkValid(this.user, "deck4")){
-        this.data.changeMessage("deck1");
-        this.router.navigate(['/edit']);
-      }
-      else
-        console.log("criar baralho");
-    }		
+      this.data.changeMessage("deck4");
+      this.router.navigate(['/edit']);
+    }	
   }
 
   checkClickDeck5() : void{
   	if(this.chooseDefaultDeckTime)
   		this.chooseDefaultDeck("deck5");
   	else{
-      if(this.checkValid(this.user, "deck5")){
-        this.data.changeMessage("deck1");
-        this.router.navigate(['/edit']);
-      }
-      else
-        console.log("criar baralho");
+      this.data.changeMessage("deck5");
+      this.router.navigate(['/edit']);
     }	
   }
 

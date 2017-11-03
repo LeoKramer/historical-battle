@@ -7,6 +7,7 @@ import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} 
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import { DataService } from "../data.service";
+import {DialogModule} from 'primeng/primeng';
 
 interface Users{
   Deck1;
@@ -52,6 +53,11 @@ interface Cards{
   Effects;
 }
 
+interface Effects{
+  effect : string;
+  name : string;
+}
+
 @Component({
   selector: 'edit-deck',
   templateUrl: './edit-deck.component.html',
@@ -69,6 +75,10 @@ export class EditDeckComponent implements OnInit{
   cards$: Observable<Cards[]>;
   cards: Object;
 
+  effectsCollectionRef: AngularFirestoreCollection<Effects>;
+  effects$: Observable<Effects[]>;
+  effects: Object;
+
   accountCardsIdsList : Array<string> = [];
   accountCardsIdsListTemp : Array<string> = [];
   accountCardsNamesList : Array<string> = [];
@@ -78,7 +88,7 @@ export class EditDeckComponent implements OnInit{
   deckCardsNamesList: Array<string> = [];
   deckCardsList: Array<Cards> = [];
 
-  numberOfDeckCards : string = "0/30";
+  numberOfDeckCards : string = "0 / 30";
 
   disableSaveDeck : boolean = true;
 
@@ -88,8 +98,18 @@ export class EditDeckComponent implements OnInit{
   cardVoid : string = 'assets/images/card/Void.png';
   cardChar : string = 'assets/images/card/chars/default.png';
   cardCost : string = 'assets/images/card/GoldLevel.png';
-  cardMarkers : string = 'assets/images/card/Markers.png';
+  cardAttack : string = 'assets/images/card/Markers.png';
+  cardLife : string = 'assets/images/card/Markers.png';
   cardName : string = 'assets/images/card/NameSign.png';
+
+  cardEffectsNames : Array<string> = [];
+  cardEffects : Array<Effects> = [];
+
+  displayEffect: boolean = false;
+
+  cardEffectText : string = "";
+  effectName: string = "";
+  effectStatus : string = "effectNotShowing"
 
   constructor(public authService: AuthService, private afs : AngularFirestore, private data: DataService, private router: Router) {
     this.cardsCollectionRef = this.afs.collection<Cards>('cards');
@@ -99,6 +119,21 @@ export class EditDeckComponent implements OnInit{
         const id = action.payload.doc.id;
         return { id, ...data };
       });
+    });
+
+    this.effectsCollectionRef = this.afs.collection<Effects>('effects');
+    this.effects$ = this.effectsCollectionRef.snapshotChanges().map(actions => {
+      return actions.map(action => {
+        const data = action.payload.doc.data() as Effects;
+        const id = action.payload.doc.id;
+        return { id, ...data };
+      });
+    });
+
+    this.effects$.subscribe(effects => {
+      for(var x = 0; x < effects.length; x++){
+        this.cardEffects[x] = effects[x];
+      }
     });
 
     this.userDoc = this.afs.doc('users/'+this.authService.currentUserId);
@@ -112,6 +147,9 @@ export class EditDeckComponent implements OnInit{
         for(var i = 0; i < user[message].length; i++){
           this.deckCardsIdsList[i] = user[message][i];
         }
+
+        if(this.deckCardsIdsList[0] == "vazio")
+          this.deckCardsIdsList = [];
 
         console.log(this.deckCardsIdsList);
 
@@ -143,18 +181,20 @@ export class EditDeckComponent implements OnInit{
 
         //salvar a lista de nomes das cartas de acordo com os ID's
         this.cards$.subscribe(cards => {
-          var offset = 0;
+          if(this.deckCardsIdsList[0] != "vazio"){
+            var offset = 0;
 
-          for(var k = 0; k < this.deckCardsIdsList.length; k++){
-            for(var y = 0; y < cards.length; y++){
-              if(cards[y]['id'] == this.deckCardsIdsList[k]){
-                offset = y;
-                break;
+            for(var k = 0; k < this.deckCardsIdsList.length; k++){
+              for(var y = 0; y < cards.length; y++){
+                if(cards[y]['id'] == this.deckCardsIdsList[k]){
+                  offset = y;
+                  break;
+                }
               }
+              this.deckCardsNamesList[k] = cards[offset]['name'];
             }
-            this.deckCardsNamesList[k] = cards[offset]['name'];
           }
-
+          
           console.log(this.deckCardsNamesList);
 
           for(var k = 0; k < this.accountCardsIdsList.length; k++){
@@ -420,6 +460,7 @@ export class EditDeckComponent implements OnInit{
                   this.deckCardsIdsList[24], this.deckCardsIdsList[25], this.deckCardsIdsList[26], this.deckCardsIdsList[27], this.deckCardsIdsList[28], this.deckCardsIdsList[29]]});
     }
 
+    this.userDoc.update({ 'defaultDeck':  this.deck});
     this.router.navigate(['/decks']);
   }
 
@@ -433,7 +474,48 @@ export class EditDeckComponent implements OnInit{
       }
     }
 
+    if(card == null){
+      for(var x = 0; x < this.accountCardsList.length; x++){
+        if(this.accountCardsList[x]['name'] == name){
+          card = this.accountCardsList[x];
+          break;
+        }
+      }
+    }
+
+    this.cardEffectsNames = [];
+    var cardEffectsTemp = card['effects'];
+    for(var x = 0; x < cardEffectsTemp.length; x++){
+      for(var y = 0; y < this.cardEffects.length; y++){
+        if(this.cardEffects[y]['id'] == cardEffectsTemp[x]){
+          this.cardEffectsNames[x] = this.cardEffects[y]['name'];
+        }
+      }
+    }
+
     this.cardChar = "assets/images/card/chars/" + card['id'] + ".png";
+    this.cardLife = "assets/images/card/lifes/" + card['life'] + ".png";
+    this.cardAttack = "assets/images/card/attacks/" + card['attack'] + ".png";
+    this.cardCost = "assets/images/card/costs/" + card['cost'] + ".png";
+    this.cardName = "assets/images/card/names/" + card['id'] + ".png";
+  }
+
+  showCardEffect(effect: string) : void{
+    this.effectName = effect;
+    var effectText : string;
+    for(var y = 0; y < this.cardEffects.length; y++){
+      if(this.cardEffects[y]['name'] == effect){
+        effectText = this.cardEffects[y]['effect'];
+      }
+    }
+    this.cardEffectText = effectText;
+    this.displayEffect = true;
+    this.effectStatus = "effectShowing"
+  }
+
+  hideCardEffect(){
+    this.displayEffect = false;
+    this.effectStatus = "effectNotShowing"
   }
 }
 

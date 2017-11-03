@@ -125,3 +125,28 @@ img{
   background-position: 0 50%;
   background-repeat: no-repeat;
 }
+
+#effectsListDiv{
+	text-align: center;
+	position: absolute;
+	top: 65%;
+	left: 45%;
+}
+
+#effectsList{
+	font-weight: bold;
+}
+
+#effectBox{
+	background-color: rgba(55, 55, 55, 1);
+	position: absolute;
+	border-radius: 3px;
+	left : 5%;
+	font-weight: bold;
+	width: 90%;
+}
+
+.effectShowing{
+	border: 2px solid black;
+	padding: 5px;
+}
