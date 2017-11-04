@@ -1,0 +1,33 @@
+<div class = "match-page" *ngIf="authService.currentUser">
+	<div class= "enemySide">
+		<div class="enemyInfo">
+			History Books: {{availableBooks}}
+		</div>
+		<div class = "enemyField">
+			<div class="field-image"><img [src]= "enemyField1ImagePath"/></div>
+			<div class="field-image"><img [src]= "enemyField2ImagePath"/></div>
+			<div class="field-image"><img [src]= "enemyField3ImagePath"/></div>
+			<div class="field-image"><img [src]= "enemyField4ImagePath"/></div>
+			<div class="field-image"><img [src]= "enemyField5ImagePath"/></div>
+		</div>
+	</div>
+	<div class="midField">
+		Turno de {{currentPlayer}}
+		<button id="btn-turn" type="button" class="btn btn-success" (click)="changeTurn()">Turno: {{turn}}</button>
+		<button id="btn-changeTurn" type="button" class="btn btn-danger" (click)="changeTurn()">Passar turno</button>
+	</div>
+	<div class="playerSide">
+		<div class = "playerField">
+			<div class="field-image"><img [src]= "playerField1ImagePath"/></div>
+			<div class="field-image"><img [src]= "playerField2ImagePath"/></div>
+			<div class="field-image"><img [src]= "playerField3ImagePath"/></div>
+			<div class="field-image"><img [src]= "playerField4ImagePath"/></div>
+			<div class="field-image"><img [src]= "playerField5ImagePath"/></div>
+		</div>
+		<div class="cardsOnHand">
+		</div>
+		<div class="playerInfo">
+			History Books: {{availableBooks}}
+		</div>
+	</div>
+</div>

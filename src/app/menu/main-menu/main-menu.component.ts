@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../auth/auth.service';
+import {Router} from '@angular/router';
 import { moveIn, fallIn } from '../../router.animations';
 import { AngularFireDatabase } from 'angularfire2/database';
 import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from 'angularfire2/firestore';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import {DialogModule} from 'primeng/primeng';
+import { DataService } from "../data.service";
 
 interface Users{
   Deck1;
@@ -54,6 +57,29 @@ interface Effects{
   [effects: string] : string;
 }
 
+interface Matches{
+  player1: string;
+  player2: string;
+  currentPlayer : string;
+  Player1Table;
+  Player2Table;
+  turn: number;
+}
+
+interface Player1Table{
+  [card: string] : cardOnTable;
+}
+
+interface Player2Table{
+  [card: string] : cardOnTable;
+}
+
+interface cardOnTable{
+  cardId: string;
+  attack : number;
+  life : number;
+}
+
 @Component({
   selector: 'main-menu',
   templateUrl: './main-menu.component.html',
@@ -64,11 +90,25 @@ export class MainMenuComponent implements OnInit {
 	userDoc: AngularFirestoreDocument<Users>;
   user$ : Observable<Users>;
 
+  matchDoc : AngularFirestoreDocument<Matches>;
+  match$ : Observable<Matches>;
+
   cardsCollectionRef: AngularFirestoreCollection<Cards>;
   cards$: Observable<Cards[]>;
   cards: Object;
 
-  constructor(public authService: AuthService, private afs : AngularFirestore) {
+  matchesCollectionRef: AngularFirestoreCollection<Matches>;
+  matches$: Observable<Matches[]>;
+  matches: Object;
+
+  matchesList : Array<Matches> = [];
+  matchesListIds : Array <string> = [];
+
+  matchInfoText : string = "";
+  displayMatch : boolean = false;
+  matchStatus : string = "matchNotShowing"
+
+  constructor(public authService: AuthService, private afs : AngularFirestore, private router: Router, private data: DataService) {
     this.cardsCollectionRef = this.afs.collection<Cards>('cards');
     this.cards$ = this.cardsCollectionRef.snapshotChanges().map(actions => {
       return actions.map(action => {
@@ -76,6 +116,44 @@ export class MainMenuComponent implements OnInit {
         const id = action.payload.doc.id;
         return { id, ...data };
       });
+    });
+
+    this.matchesCollectionRef = this.afs.collection<Matches>('matches');
+    this.matches$ = this.matchesCollectionRef.snapshotChanges().map(actions => {
+      return actions.map(action => {
+        const data = action.payload.doc.data() as Matches;
+        const id = action.payload.doc.id;
+        return { id, ...data };
+      });
+    });
+    this.matches$.subscribe(matches => {
+      this.matchesList = [];
+      var matchesListTemp : Array<Matches> = [];
+      for(var x = 0; x < matches.length; x++){
+        matchesListTemp[x] = matches[x];
+      }
+
+      var offset = 0;
+      for(var x = 0; x < matchesListTemp.length; x++){
+        if(matchesListTemp[x]['player2'] == "vazio"){
+          this.matchesList[offset] = matchesListTemp[x];
+          offset++;
+        }
+      }
+
+      console.log(this.matchesList);
+
+      this.matchDoc = this.afs.doc('matches/'+this.authService.currentUserId);
+      this.match$ = this.matchDoc.valueChanges();
+      this.match$.subscribe(data => {
+        if(data != null){
+          if(data['player2'] != "vazio"){
+            this.data.changeMessage(this.authService.currentUserId);
+            this.router.navigate(['/match']);
+          }
+        }
+      });
+      
     });
 
     this.userDoc = this.afs.doc('users/'+this.authService.currentUserId);
@@ -87,8 +165,6 @@ export class MainMenuComponent implements OnInit {
           this.cards$.subscribe(data => {this.cards=data;this.firstLogin(this.cards);});
         }
     });
-        
-    
   }
 
   ngOnInit() {
@@ -147,5 +223,41 @@ export class MainMenuComponent implements OnInit {
                   deck1Cards[24], deck1Cards[25], deck1Cards[26], deck1Cards[27], deck1Cards[28], deck1Cards[29]],
         'gold': 0,
         'defaultDeck': 'deck1'});
+  }
+
+  createMatch(){
+    var firstTable : cardOnTable = {'cardId': "vazio", 'attack' : -1, 'life' : -1};
+
+    this.afs.collection('matches').doc(this.authService.currentUserId).set({
+      'player1' : this.authService.currentUserId,
+      'player2' : "vazio",
+      'currentPlayer' : this.authService.currentUserId,
+      'Player1Table' : [firstTable, firstTable, firstTable, firstTable, firstTable],
+      'Player2Table' : [firstTable, firstTable, firstTable, firstTable, firstTable],
+      'turn' : 0
+    });
+  }
+
+  showMatchInfo(matchId : string) : void{
+    if(this.authService.currentUserId == matchId)
+      this.matchInfoText = "Esta partida foi criada por você!";
+    else
+      this.matchInfoText = "Clique para entrar na partida!";
+    
+    this.displayMatch = true;
+    this.matchStatus = "matchShowing"
+  }
+
+  hideMatchInfo(){
+    this.displayMatch = false;
+    this.matchStatus = "effectNotShowing"
+  }
+
+  enterMatch(matchId : string): void{
+    if(this.authService.currentUserId != matchId){
+      this.afs.collection('matches').doc(matchId).update({'player2' : this.authService.currentUserId});
+      this.data.changeMessage(matchId);
+      this.router.navigate(['/match']);
+    }
   }
 }

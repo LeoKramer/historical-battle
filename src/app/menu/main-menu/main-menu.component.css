@@ -33,3 +33,36 @@ h2{
 	padding-top: 10%;
 	text-align: center;
 }
+
+#matchesList{
+	height: 40vh;
+	overflow: scroll;
+	border: 2px solid white;
+}
+
+#matchesListBox{
+	width: 80vh;
+	margin-left: 31%;
+	margin-top: 5%;
+	border: 2px solid white; 
+}
+
+#matchInfoBox{
+	background-color: black;
+	position: absolute;
+	border-radius: 3px;
+	top: 45%;
+	left : 35%;
+	font-weight: bold;
+	width: 30%;
+}
+
+.matchInfoShowing{
+	border: 2px solid black;
+	padding: 5px;
+}
+
+#eachMatch{
+	border: 2px solid white;
+	margin: 5px;
+}

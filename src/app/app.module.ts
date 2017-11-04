@@ -20,6 +20,7 @@ import {UserSignupComponent} from './auth/user-signup/user-signup.component';
 import {MainMenuComponent} from './menu/main-menu/main-menu.component';
 import {DeckMenuComponent} from './menu/deck-menu/deck-menu.component';
 import {EditDeckComponent} from './menu/edit-deck/edit-deck.component';
+import {MatchComponent} from './match/match.component';
 import {DialogModule} from 'primeng/primeng';
 
 import {DataService} from './menu/data.service';
@@ -32,7 +33,8 @@ import {DataService} from './menu/data.service';
     UserSignupComponent,
     MainMenuComponent,
     DeckMenuComponent,
-    EditDeckComponent
+    EditDeckComponent,
+    MatchComponent
   ],
   imports: [
     BrowserAnimationsModule,

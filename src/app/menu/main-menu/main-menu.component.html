@@ -14,6 +14,17 @@
 		</ul>
 	</div>
 	<div class="menu-play">
-		<button id="btn-procurar-partida"type="button" class="btn btn-success" href="#">Procurar partida</button>
+		<button id="btn-procurar-partida"type="button" class="btn btn-success" (click)="createMatch()">Criar partida</button>
+		<p-dialog [class] = "matchStatus" [(visible)]="displayMatch" id="matchInfoBox">
+				    {{matchInfoText}}
+		</p-dialog>
+		<div id="matchesListBox">
+			Partidas disponíveis
+			<div id="matchesList">
+				<div *ngFor="let match of matchesList" id="eachMatch" (mouseenter)="showMatchInfo(match['id'])" (mouseleave)="hideMatchInfo()" (click)="enterMatch(match['id'])">
+					Match ID : {{match['id'] | json}}
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

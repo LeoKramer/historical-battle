@@ -9,13 +9,16 @@ import {MainMenuComponent} from './menu/main-menu/main-menu.component';
 import {DeckMenuComponent} from './menu/deck-menu/deck-menu.component';
 import {EditDeckComponent} from './menu/edit-deck/edit-deck.component';
 
+import {MatchComponent} from './match/match.component';
+
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: UserLoginComponent},
   {path: 'menu', component: MainMenuComponent},
   {path: 'signup', component: UserSignupComponent},
   {path: 'decks', component: DeckMenuComponent},
-  {path: 'edit', component: EditDeckComponent}
+  {path: 'edit', component: EditDeckComponent},
+  {path: 'match', component: MatchComponent}
 ];
 
 @NgModule({
