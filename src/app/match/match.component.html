@@ -1,33 +1,189 @@
 <div class = "match-page" *ngIf="authService.currentUser">
 	<div class= "enemySide">
 		<div class="enemyInfo">
-			History Books: {{availableBooks}}
+			<button id="btn-enemyLife" type="button" class="btn btn-warning" (click)="setEnemyFieldTarget(5)">Vida do inimigo : {{enemyLife}}</button>
+			<button id="btn-turn" type="button" class="btn btn-success" (click)="changeTurn()">Turno: {{turn}}</button>
 		</div>
 		<div class = "enemyField">
-			<div class="field-image"><img [src]= "enemyField1ImagePath"/></div>
-			<div class="field-image"><img [src]= "enemyField2ImagePath"/></div>
-			<div class="field-image"><img [src]= "enemyField3ImagePath"/></div>
-			<div class="field-image"><img [src]= "enemyField4ImagePath"/></div>
-			<div class="field-image"><img [src]= "enemyField5ImagePath"/></div>
+			<div class="field-image field1" (click)="setEnemyFieldTarget(0)">
+				<div class="overlay-image-4 background-cover"><img [src]= "enemyField1CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "enemyField1CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "enemyField1CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "enemyField1CardVoid"></div>
+				<div class="overlay-image-2 background-cover cardChar"><img [src]= "enemyField1CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField1CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField1CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField1CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField1CardName"></div>
+			</div>
+			<div class="field-image field2" (click)="setEnemyFieldTarget(1)">
+				<div class="overlay-image-4 background-cover"><img [src]= "enemyField2CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "enemyField2CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "enemyField2CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "enemyField2CardVoid"></div>
+				<div class="overlay-image-2 background-cover cardChar"><img [src]= "enemyField2CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField2CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField2CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField2CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField2CardName"></div>
+			</div>
+			<div class="field-image field3" (click)="setEnemyFieldTarget(2)">
+				<div class="overlay-image-4 background-cover"><img [src]= "enemyField3CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "enemyField3CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "enemyField3CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "enemyField3CardVoid"></div>
+				<div class="overlay-image-2 background-cover cardChar"><img [src]= "enemyField3CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField3CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField3CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField3CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField3CardName"></div>
+			</div>
+			<div class="field-image field4" (click)="setEnemyFieldTarget(3)">
+				<div class="overlay-image-4 background-cover"><img [src]= "enemyField4CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "enemyField4CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "enemyField4CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "enemyField4CardVoid"></div>
+				<div class="overlay-image-2 background-cover cardChar"><img [src]= "enemyField4CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField4CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField4CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField4CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField4CardName"></div>
+			</div>
+			<div class="field-image field5" (click)="setEnemyFieldTarget(4)">
+				<div class="overlay-image-4 background-cover"><img [src]= "enemyField5CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "enemyField5CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "enemyField5CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "enemyField5CardVoid"></div>
+				<div class="overlay-image-2 background-cover cardChar"><img [src]= "enemyField5CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField5CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField5CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField5CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "enemyField5CardName"></div>
+			</div>
 		</div>
 	</div>
 	<div class="midField">
-		Turno de {{currentPlayer}}
-		<button id="btn-turn" type="button" class="btn btn-success" (click)="changeTurn()">Turno: {{turn}}</button>
+		<button id="btn-currentPlayer" type="button" class="btn btn-info">{{currentPlayer}}</button>
 		<button id="btn-changeTurn" type="button" class="btn btn-danger" (click)="changeTurn()">Passar turno</button>
 	</div>
 	<div class="playerSide">
 		<div class = "playerField">
-			<div class="field-image"><img [src]= "playerField1ImagePath"/></div>
-			<div class="field-image"><img [src]= "playerField2ImagePath"/></div>
-			<div class="field-image"><img [src]= "playerField3ImagePath"/></div>
-			<div class="field-image"><img [src]= "playerField4ImagePath"/></div>
-			<div class="field-image"><img [src]= "playerField5ImagePath"/></div>
+			<div class="field-image field1" (click)="setPlayerFieldTarget(0)">
+				<div class="overlay-image-4 background-cover"><img [src]= "playerField1CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerField1CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerField1CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "playerField1CardVoid"></div>
+				<div class="overlay-image-2 background-cover" cardChar><img [src]= "playerField1CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField1CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField1CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField1CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField1CardName"></div>
+			</div>
+			<div class="field-image field2" (click)="setPlayerFieldTarget(1)">
+				<div class="overlay-image-4 background-cover"><img [src]= "playerField2CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerField2CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerField2CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "playerField2CardVoid"></div>
+				<div class="overlay-image-2 background-cover" cardChar><img [src]= "playerField2CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField2CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField2CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField2CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField2CardName"></div>
+			</div>
+			<div class="field-image field3" (click)="setPlayerFieldTarget(2)">
+				<div class="overlay-image-4 background-cover"><img [src]= "playerField3CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerField3CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerField3CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "playerField3CardVoid"></div>
+				<div class="overlay-image-2 background-cover" cardChar><img [src]= "playerField3CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField3CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField3CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField3CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField3CardName"></div>
+			</div>
+			<div class="field-image field4" (click)="setPlayerFieldTarget(3)">
+				<div class="overlay-image-4 background-cover"><img [src]= "playerField4CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerField4CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerField4CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "playerField4CardVoid"></div>
+				<div class="overlay-image-2 background-cover" cardChar><img [src]= "playerField4CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField4CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField4CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField4CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField4CardName"></div>
+			</div>
+			<div class="field-image field5" (click)="setPlayerFieldTarget(4)">
+				<div class="overlay-image-4 background-cover"><img [src]= "playerField5CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerField5CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerField5CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "playerField5CardVoid"></div>
+				<div class="overlay-image-2 background-cover" cardChar><img [src]= "playerField5CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField5CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField5CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField5CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerField5CardName"></div>
+			</div>
 		</div>
 		<div class="cardsOnHand">
+			<div class="hand-image hand1" (click)="tryToCastFromHand(0)">
+				<div class="overlay-image-4 background-cover"><img [src]= "playerHand1CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerHand1CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerHand1CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "playerHand1CardVoid"></div>
+				<div class="overlay-image-2 background-cover cardChar"><img [src]= "playerHand1CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand1CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand1CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand1CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand1CardName"></div>
+			</div>
+			<div class="hand-image hand2" (click)="tryToCastFromHand(1)">
+				<div class="overlay-image-4 background-cover"><img [src]= "playerHand2CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerHand2CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerHand2CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "playerHand2CardVoid"></div>
+				<div class="overlay-image-2 background-cover cardChar"><img [src]= "playerHand2CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand2CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand2CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand2CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand2CardName"></div>
+			</div>
+			<div class="hand-image hand3" (click)="tryToCastFromHand(2)">
+				<div class="overlay-image-4 background-cover"><img [src]= "playerHand3CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerHand3CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerHand3CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "playerHand3CardVoid"></div>
+				<div class="overlay-image-2 background-cover cardChar"><img [src]= "playerHand3CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand3CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand3CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand3CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand3CardName"></div>
+			</div>
+			<div class="hand-image hand4" (click)="tryToCastFromHand(3)">
+				<div class="overlay-image-4 background-cover"><img [src]= "playerHand4CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerHand4CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerHand4CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "playerHand4CardVoid"></div>
+				<div class="overlay-image-2 background-cover cardChar"><img [src]= "playerHand4CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand4CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand4CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand4CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand4CardName"></div>
+			</div>
+			<div class="hand-image hand5" (click)="tryToCastFromHand(4)">
+				<div class="overlay-image-4 background-cover"><img [src]= "playerHand5CardBase"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerHand5CardCave"></div>
+				<div class="overlay-image-3 background-cover"><img [src]= "playerHand5CardCurtain"></div>
+				<div class="overlay-image-2 background-cover"><img [src]= "playerHand5CardVoid"></div>
+				<div class="overlay-image-2 background-cover cardChar"><img [src]= "playerHand5CardChar"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand5CardCost"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand5CardAttack"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand5CardLife"></div>
+				<div class="overlay-image-1 background-cover"><img [src]= "playerHand5CardName"></div>
+			</div>
 		</div>
 		<div class="playerInfo">
-			History Books: {{availableBooks}}
+			<button id="btn-historyBooks" type="button" class="btn btn-primary">Livros de História: {{availableBooks}}</button>
+			<button id="btn-playerLife" type="button" class="btn btn-warning">Sua vida: {{playerLife}}</button>
 		</div>
 	</div>
 </div>

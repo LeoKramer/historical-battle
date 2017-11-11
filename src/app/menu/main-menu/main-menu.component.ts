@@ -53,13 +53,25 @@ interface Cards{
   Effects;
 }
 
+interface CardsOnTable{
+  attack: number;
+  cost: number;
+  id : string;
+  life: number;
+  name: string;
+  rarity: number;
+  Effects;
+}
+
 interface Effects{
   [effects: string] : string;
 }
 
 interface Matches{
   player1: string;
+  player1Life : number;
   player2: string;
+  player2Life : number;
   currentPlayer : string;
   Player1Table;
   Player2Table;
@@ -67,18 +79,13 @@ interface Matches{
 }
 
 interface Player1Table{
-  [card: string] : cardOnTable;
+  [card: string] : Cards;
 }
 
 interface Player2Table{
-  [card: string] : cardOnTable;
+  [card: string] : Cards;
 }
 
-interface cardOnTable{
-  cardId: string;
-  attack : number;
-  life : number;
-}
 
 @Component({
   selector: 'main-menu',
@@ -226,15 +233,17 @@ export class MainMenuComponent implements OnInit {
   }
 
   createMatch(){
-    var firstTable : cardOnTable = {'cardId': "vazio", 'attack' : -1, 'life' : -1};
+    var firstTable : CardsOnTable = {'attack': -1, 'cost': -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"]};
 
     this.afs.collection('matches').doc(this.authService.currentUserId).set({
       'player1' : this.authService.currentUserId,
+      'player1Life' : 20,
       'player2' : "vazio",
+      'player2Life' : 20,
       'currentPlayer' : this.authService.currentUserId,
       'Player1Table' : [firstTable, firstTable, firstTable, firstTable, firstTable],
       'Player2Table' : [firstTable, firstTable, firstTable, firstTable, firstTable],
-      'turn' : 0
+      'turn' : 1
     });
   }
 

@@ -14,7 +14,7 @@ h2{
 
 .enemySide{
 	border-bottom: 10px solid white;
-	margin: 0px;
+	padding-bottom: 1%;
 }
 
 img{
@@ -30,17 +30,28 @@ img{
 	margin-top: 5%;
 }
 
+.hand-image{
+	display: inline-block;
+	width: 5%;
+	height: 10%;
+	margin-left: 2%;
+	margin-right: 2%;
+	margin-top: 2%;
+}
+
 .enemyField{
 	margin-left: 18.5%;
 	margin-bottom: 10px;
+	padding: 6%;
 }
 
 .playerField{
 	margin-left: 18.5%;
+	padding: 5.5%;
 }
 
 #btn-turn{
-	margin-left: 34%;
+	float: right;
 	width: 10%;
 }
 
@@ -49,8 +60,28 @@ img{
 	width: 10%;
 }
 
+#btn-enemyLife{
+	margin: 0px;
+	float: left;
+	width: 15%;
+}
+
+#btn-playerLife{
+	float: right;
+	width: 15%;
+}
+
+#btn-historyBooks{
+	float: left;
+	width: 15%;
+}
+
+#btn-currentPlayer{
+	float: left;
+	width: 15%;
+}
+
 .playerInfo{
-	margin-top: 8%;
 	padding-left: 5px;
 }
 
@@ -60,4 +91,170 @@ img{
 
 .midField{
 	padding-left: 5px;
+}
+
+.overlay-image-1 {
+  z-index: -1;
+}
+
+.overlay-image-2 {
+  z-index: -2;
+}
+
+.overlay-image-3 {
+  z-index: -3;
+}
+
+.overlay-image-4 {
+  z-index: -4;
+}
+
+.background-cover {
+  background-size: cover;
+  background-position: 0 50%;
+  background-repeat: no-repeat;
+}
+
+.enemyField .field1 img{
+	position: absolute;
+	left: 20.5%;
+	top: 12.25%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.enemyField .field2 img{
+	position: absolute;
+	left: 32.7%;
+	top: 12.25%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.enemyField .field3 img{
+	position: absolute;
+	left: 45%;
+	top: 12.25%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.enemyField .field4 img{
+	position: absolute;
+	left: 57%;
+	top: 12.25%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.enemyField .field5 img{
+	position: absolute;
+	left: 69%;
+	top: 12.25%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.playerField .field1 img{
+	position: absolute;
+	left: 20.5%;
+	top: 48%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.playerField .field2 img{
+	position: absolute;
+	left: 32.7%;
+	top: 48%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.playerField .field3 img{
+	position: absolute;
+	left: 45%;
+	top: 48%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.playerField .field4 img{
+	position: absolute;
+	left: 57%;
+	top: 48%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.playerField .field5 img{
+	position: absolute;
+	left: 69%;
+	top: 48%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.cardsOnHand .hand1 img{
+	position: absolute;
+	left: 25%;
+	top: 75%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.cardsOnHand .hand2 img{
+	position: absolute;
+	left: 35%;
+	top: 75%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.cardsOnHand .hand3 img{
+	position: absolute;
+	left: 45%;
+	top: 75%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.cardsOnHand .hand4 img{
+	position: absolute;
+	left: 55%;
+	top: 75%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.cardsOnHand .hand5 img{
+	position: absolute;
+	left: 65%;
+	top: 75%;
+	width: 8%;
+	height: 23.5%;
+}
+
+.hand-image .cardChar img{
+	top: 74%;
+}
+
+.hand-image img:hover{
+	-webkit-box-shadow: 0px 0px 30px 0px rgba(0, 255, 0, 0.67);
+	-moz-box-shadow:    0px 0px 30px 0px rgba(0, 255, 0, 0.67);
+	box-shadow:         0px 0px 30px 0px rgba(0, 255, 0, 0.67);
+}
+
+.field-image img:hover{
+	-webkit-box-shadow: 0px 0px 30px 0px rgba(255, 0, 0, 0.67);
+	-moz-box-shadow:    0px 0px 30px 0px rgba(255, 0, 0, 0.67);
+	box-shadow:         0px 0px 30px 0px rgba(255, 0, 0, 0.67);
+}
+
+.cardsOnHand{
+	width: 50%;
+	margin-left: 24%;
+	margin-top: 3.9%;
+	padding: 2.9%;
+	border: 2px solid white;
 }
