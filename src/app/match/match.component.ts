@@ -56,14 +56,20 @@ interface Cards{
 interface CardsOnTable{
   attack: number;
   cost: number;
+  enterTurn : number;
   id : string;
   life: number;
   name: string;
   rarity: number;
   Effects;
+  EffectsOver;
 }
 
 interface Effects{
+  [effects: string] : string;
+}
+
+interface EffectsOver{
   [effects: string] : string;
 }
 
@@ -79,11 +85,11 @@ interface Matches{
 }
 
 interface Player1Table{
-  [card: string] : Cards;
+  [card: string] : CardsOnTable;
 }
 
 interface Player2Table{
-  [card: string] : Cards;
+  [card: string] : CardsOnTable;
 }
 
 @Component({
@@ -248,8 +254,8 @@ export class MatchComponent implements OnInit {
   playerHand5CardLife : string = 'assets/images/card/Markers.png';
   playerHand5CardName : string = 'assets/images/card/NameSign.png';
 
-  enemyLife : string = "20";
-  playerLife : string = "20";
+  enemyLife : number = 20;
+  playerLife : number = 20;
   availableBooks : number = 0;
   currentPlayer : string = "";
   turn : number = 0;
@@ -288,6 +294,9 @@ export class MatchComponent implements OnInit {
   attackingCardPosition : number = -1;
   targetCardForAttack : CardsOnTable = null;
 
+  //se a carta da posição do vetor equivalente a posição do campo atacou, muda para 1, senão é 0
+  cardsThatAttackedThisTurn : Array<number> = [0, 0, 0, 0, 0];
+
   constructor(public authService: AuthService, private afs : AngularFirestore, private router: Router, private data: DataService) {
     this.cardsCollectionRef = this.afs.collection<Cards>('cards');
     this.cards$ = this.cardsCollectionRef.snapshotChanges().map(actions => {
@@ -316,9 +325,6 @@ export class MatchComponent implements OnInit {
             this.matchPlayer1 = data['player1'];
             this.matchPlayer2 = data['player2'];
 
-            console.log("player 1 : "+this.matchPlayer1);
-            console.log("player 2 : "+this.matchPlayer2);
-
             //verifique quem é esse jogador 
             if(data['player1'] == this.authService.currentUserId)
               this.whoIsThisPlayer = "Player1";
@@ -334,12 +340,12 @@ export class MatchComponent implements OnInit {
 
             //verifique a vida de cada jogador
             if(data['player1'] == this.authService.currentUserId){
-              this.enemyLife = data['player2Life'].toString();
-              this.playerLife = data['player1Life'].toString();
+              this.enemyLife = data['player2Life'];
+              this.playerLife = data['player1Life'];
             }
             else{
-              this.enemyLife = data['player1Life'].toString();
-              this.playerLife = data['player2Life'].toString();
+              this.enemyLife = data['player1Life'];
+              this.playerLife = data['player2Life'];
             }
 
             //verificar o campo
@@ -763,11 +769,6 @@ export class MatchComponent implements OnInit {
     console.log(this.cardsOnHand);
     console.log("last card got from deck " + this.lastCardGot);
 
-    var handCard : CardsOnTable = {'attack': this.cardsOnHand[field]['attack'], 'cost': this.cardsOnHand[field]['cost'], 
-                              'id' : this.cardsOnHand[field]['id'], 'life' : this.cardsOnHand[field]['life'], 
-                              'name' : this.cardsOnHand[field]['name'], 'rarity' : this.cardsOnHand[field]['rarity'], 
-                              'Effects' : this.cardsOnHand[field]['effects']};
-
     console.log(handCard);
     var fieldSpacePosition = -1;
     console.log(this.playerTable);
@@ -780,62 +781,24 @@ export class MatchComponent implements OnInit {
         }
       }
 
+      if(fieldSpacePosition == -1)
+        return;
+
+      var handCard : CardsOnTable = {'attack': this.cardsOnHand[field]['attack'], 'cost': this.cardsOnHand[field]['cost'], 
+                              'enterTurn' : this.turn, 'id' : this.cardsOnHand[field]['id'], 
+                              'life' : this.cardsOnHand[field]['life'], 'name' : this.cardsOnHand[field]['name'], 
+                              'rarity' : this.cardsOnHand[field]['rarity'], 'Effects' : this.cardsOnHand[field]['effects'],
+                              'EffectsOver' : ["vazio"]};
+
       console.log(fieldSpacePosition);
 
-      if(this.whoIsThisPlayer == "Player1"){
-        switch(fieldSpacePosition){
-          case(0):
-            this.afs.collection('matches').doc(this.matchId).update({'Player1Table' : [handCard, this.playerTable[1], 
-                                                                this.playerTable[2], this.playerTable[3], this.playerTable[4]]});
-            break;
-          case(1):
-            this.afs.collection('matches').doc(this.matchId).update({'Player1Table' : [this.playerTable[0], handCard,
-                                                                this.playerTable[2], this.playerTable[3], this.playerTable[4]]});
-            break;
-          case(2):
-            this.afs.collection('matches').doc(this.matchId).update({'Player1Table' : [this.playerTable[0], this.playerTable[1],
-                                                               handCard , this.playerTable[3], this.playerTable[4]]});
-            break;
-          case(3):
-            this.afs.collection('matches').doc(this.matchId).update({'Player1Table' : [this.playerTable[0], this.playerTable[1], 
-                                                                this.playerTable[2], handCard, this.playerTable[4]]});
-            break;
-          case(4):
-            this.afs.collection('matches').doc(this.matchId).update({'Player1Table' : [this.playerTable[0], this.playerTable[1], 
-                                                                this.playerTable[2], this.playerTable[3], handCard]});
-            break;
-          default:
-            return;
-        } 
-      }
-      else if(this.whoIsThisPlayer == "Player2"){
-        switch(fieldSpacePosition){
-          case(0):
-            this.afs.collection('matches').doc(this.matchId).update({'Player2Table' : [handCard, this.playerTable[1], 
-                                                                this.playerTable[2], this.playerTable[3], this.playerTable[4]]});
-            break;
-          case(1):
-            this.afs.collection('matches').doc(this.matchId).update({'Player2Table' : [this.playerTable[0], handCard,
-                                                                this.playerTable[2], this.playerTable[3], this.playerTable[4]]});
-            break;
-          case(2):
-            this.afs.collection('matches').doc(this.matchId).update({'Player2Table' : [this.playerTable[0], this.playerTable[1],
-                                                               handCard , this.playerTable[3], this.playerTable[4]]});
-            break;
-          case(3):
-            this.afs.collection('matches').doc(this.matchId).update({'Player2Table' : [this.playerTable[0], this.playerTable[1], 
-                                                                this.playerTable[2], handCard, this.playerTable[4]]});
-            break;
-          case(4):
-            this.afs.collection('matches').doc(this.matchId).update({'Player2Table' : [this.playerTable[0], this.playerTable[1], 
-                                                                this.playerTable[2], this.playerTable[3], handCard]});
-            break;
-          default:
-            return;
-        } 
-      }
+      this.playerTable[fieldSpacePosition] = handCard;
 
-      var emptyCard : CardsOnTable = {'attack': -1, 'cost': -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"]};
+      this.updatePlayerTableOnPosition(fieldSpacePosition, handCard);
+
+      this.castCardEffect(fieldSpacePosition);
+
+      var emptyCard : CardsOnTable = {'attack': -1, 'cost': -1, 'enterTurn' : -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"], 'EffectsOver' : ["vazio"]};
 
       for(var x = field; x < 4; x++){
         this.cardsOnHand[x] = this.cardsOnHand[x+1];
@@ -843,6 +806,312 @@ export class MatchComponent implements OnInit {
 
       this.cardsOnHand[4] = emptyCard;
       this.setHandCardsImages();
+    }
+  }
+
+  castCardEffect(field : number) : void{
+    var fieldCard : CardsOnTable = this.playerTable[field];
+    for(var x = 0; x < fieldCard['Effects'].length; x++){
+      switch(fieldCard['Effects'][x]){
+        case("charm"):
+          this.charm(field);
+          break;
+        case("command"):
+          this.command();
+          break;
+        case("emancipate"):
+          this.emancipate();
+          break;
+        case("facism"):
+          this.facism();
+          break;
+        case("holocaust"):
+          this.holocaust(field);
+          break;
+        case("hypnosis"):
+          this.hypnosis();
+          break;
+        case("invent"):
+          this.invent();
+          break;
+        case("pacifism"):
+          this.pacifism();
+          break;
+        case("paint"):
+          this.paint();
+          break;
+        case("performance"):
+          this.performance();
+          break;
+        case("purge"):
+          this.purge();
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  getARandomPlayerCardOnTablePosition() : number{
+    var randomPosition = Math.floor(Math.random() * (this.playerTable.length-1)) + 0;
+
+    var chances = 0;
+    while(this.playerTable[randomPosition]['name'] == "vazio" && chances < 3){
+      //tente pegar tres vezes uma posicao aleatoria
+      var randomPosition = Math.floor(Math.random() * (this.playerTable.length-1)) + 0;
+      chances++;
+    }
+
+    if(this.playerTable[randomPosition]['name'] == "vazio"){
+      randomPosition = -1;
+      //se ainda não conseguiu uma carta não vazia, pegue a primeira não vazia na ordem
+      for(var x = 0; x < this.playerTable.length; x++){
+        if(this.playerTable[x]['name'] != "vazio"){
+          randomPosition = x;
+          break;
+        }
+      }
+    }
+
+    return randomPosition;
+  }
+
+  getARandomEnemyCardOnTablePosition() : number{
+    var randomPosition = Math.floor(Math.random() * (this.enemyTable.length-1)) + 0;
+
+    var chances = 0;
+    while(this.enemyTable[randomPosition]['name'] == "vazio" && chances < 3){
+      //tente pegar tres vezes uma posicao aleatoria
+      var randomPosition = Math.floor(Math.random() * (this.enemyTable.length-1)) + 0;
+      chances++;
+    }
+
+    if(this.enemyTable[randomPosition]['name'] == "vazio"){
+      randomPosition = -1;
+      //se ainda não conseguiu uma carta não vazia, pegue a primeira não vazia na ordem
+      for(var x = 0; x < this.enemyTable.length; x++){
+        if(this.enemyTable[x]['name'] != "vazio"){
+          randomPosition = x;
+          break;
+        }
+      }
+    }
+
+    return randomPosition;
+  }
+
+  charm(field : number) : void{
+    var targetPosition : number = this.getARandomEnemyCardOnTablePosition();
+
+    if(targetPosition == -1)
+      return;
+
+     
+    var targetCard : CardsOnTable = this.enemyTable[targetPosition];
+
+    var charmEffect : string = "charmedByEnemyCardOnPosition" + field;
+
+    for(var x = 0; x < targetCard['EffectsOver'].length; x++){
+      if(targetCard['EffectsOver'][x] == "vazio"){
+        targetCard['EffectsOver'][x] = charmEffect;
+        break; 
+      }
+    }
+    
+    this.enemyTable[targetPosition] = targetCard;
+    this.updateEnemyTableOnPosition(targetPosition, targetCard);
+  }
+
+  command() : void{
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.playerTable[x]['name'] != "vazio"){
+        this.playerTable[x]['attack'] += 1;
+      }
+    }
+
+    for(var x = 0; x < this.playerTable.length; x++){
+      this.updatePlayerTableOnPosition(x, this.playerTable[x]);
+    }
+  }
+
+  emancipate() : void{
+    var newPlayerTable : Array<CardsOnTable> = this.playerTable;
+    var newEnemyTable : Array<CardsOnTable> = this.enemyTable;
+
+    for(var x = 0; x < newPlayerTable.length; x++){
+      if(newPlayerTable[x]['name'] != "vazio"){
+        for(var y = 0; y < this.cardsList.length; y++){
+          if(this.cardsList[y]['id'] == newPlayerTable[x]['id']){
+            newPlayerTable[x] = {'attack': this.cardsList[y]['attack'], 'cost': this.cardsList[y]['cost'], 
+                                'enterTurn' : this.turn, 'id' : this.cardsList[y]['id'], 
+                                'life' : this.cardsList[y]['life'], 'name' : this.cardsList[y]['name'], 
+                                'rarity' : this.cardsList[y]['rarity'], 'Effects' : this.cardsList[y]['effects'],
+                                'EffectsOver' : ["vazio"]};
+            break;
+          }
+        }
+      }
+    }
+
+    for(var x = 0; x < newEnemyTable.length; x++){
+      if(newEnemyTable[x]['name'] != "vazio"){
+        for(var y = 0; y < this.cardsList.length; y++){
+          if(this.cardsList[y]['id'] == newEnemyTable[x]['id']){
+            newEnemyTable[x] = {'attack': this.cardsList[y]['attack'], 'cost': this.cardsList[y]['cost'], 
+                                'enterTurn' : this.turn, 'id' : this.cardsList[y]['id'], 
+                                'life' : this.cardsList[y]['life'], 'name' : this.cardsList[y]['name'], 
+                                'rarity' : this.cardsList[y]['rarity'], 'Effects' : this.cardsList[y]['effects'],
+                                'EffectsOver' : ["vazio"]};
+            break;
+          }
+        }
+      }
+    }
+
+    this.playerTable = newPlayerTable;
+    for(var x = 0; x < this.playerTable.length; x++){
+      this.updatePlayerTableOnPosition(x, this.playerTable[x]);
+    }
+
+    this.enemyTable = newEnemyTable;
+    for(var x = 0; x < this.enemyTable.length; x++){
+      this.updateEnemyTableOnPosition(x, this.enemyTable[x]);
+    }
+  }
+
+  facism(){
+    var greatestAttack : number = -1;
+    var greatestAttackPosition : number = -1;
+    var emptyCard : CardsOnTable = {'attack': -1, 'cost': -1, 'enterTurn' : -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"], 'EffectsOver' : ["vazio"]};
+
+    for(var x = 0; x < this.enemyTable.length; x++){
+      if(this.enemyTable[x]['attack'] > greatestAttack){
+        greatestAttack = this.enemyTable[x]['attack'];
+        greatestAttackPosition = x;
+      }
+    }
+
+    if(greatestAttack != -1){
+      this.enemyTable[greatestAttackPosition] = emptyCard;
+      this.updateEnemyTableOnPosition(greatestAttackPosition, emptyCard);
+    }
+  }
+
+  holocaust(field : number) : void{
+    var cardToSave : CardsOnTable = this.playerTable[field];
+    var emptyCard : CardsOnTable = {'attack': -1, 'cost': -1, 'enterTurn' : -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"], 'EffectsOver' : ["vazio"]};
+
+    var newPlayerTable : Array<CardsOnTable> = [emptyCard, emptyCard, emptyCard, emptyCard, emptyCard];
+    var newEnemyTable : Array<CardsOnTable> = [emptyCard, emptyCard, emptyCard, emptyCard, emptyCard];
+
+    newPlayerTable[field] = cardToSave;
+
+    this.playerTable = newPlayerTable;
+    for(var x = 0; x < this.playerTable.length; x++){
+      this.updatePlayerTableOnPosition(x, this.playerTable[x]);
+    }
+
+    this.enemyTable = newEnemyTable;
+    for(var x = 0; x < this.enemyTable.length; x++){
+      this.updateEnemyTableOnPosition(x, this.enemyTable[x]);
+    }    
+  }
+
+  hypnosis() : void{
+    var emptyCard : CardsOnTable = {'attack': -1, 'cost': -1, 'enterTurn' : -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"], 'EffectsOver' : ["vazio"]};
+
+    var firstTargetPosition = this.getARandomEnemyCardOnTablePosition(); 
+    var secondTargetPosition = this.getARandomEnemyCardOnTablePosition();
+
+    if(firstTargetPosition == -1)
+      return;
+
+    var firstTargetCard : CardsOnTable = this.enemyTable[firstTargetPosition]; 
+    var secondTargetCard : CardsOnTable = this.enemyTable[secondTargetPosition];
+
+    firstTargetCard['life'] -= secondTargetCard['attack'];
+    secondTargetCard['life'] -= firstTargetCard['attack'];
+    
+    if(firstTargetCard['life'] <= 0)
+      firstTargetCard = emptyCard;
+
+    if(secondTargetCard['life'] <= 0)
+      secondTargetCard = emptyCard;
+
+    this.enemyTable[firstTargetPosition] = firstTargetCard;
+    this.enemyTable[secondTargetPosition] = secondTargetCard;
+
+    this.updateEnemyTableOnPosition(firstTargetPosition, firstTargetCard);
+    this.updateEnemyTableOnPosition(secondTargetPosition, secondTargetCard);
+  }
+
+  invent() : void{
+    var cardPosition = this.getARandomPlayerCardOnTablePosition();
+
+    if(cardPosition == -1)
+      return;
+
+    var targetCard = this.playerTable[cardPosition];
+    targetCard['attack'] *= 2;
+
+    this.playerTable[cardPosition] = targetCard;
+    this.updatePlayerTableOnPosition(cardPosition, targetCard);
+  }
+
+  pacifism() : void{
+    var targetPosition = this.getARandomEnemyCardOnTablePosition(); 
+
+    if(targetPosition == -1)
+      return;
+
+    var targetCard : CardsOnTable = this.enemyTable[targetPosition];
+    targetCard['attack'] = 1;
+
+    this.enemyTable[targetPosition] = targetCard;
+    this.updateEnemyTableOnPosition(targetPosition, targetCard);
+  }
+
+  paint(){
+    var targetPosition = this.getARandomPlayerCardOnTablePosition(); 
+
+    if(targetPosition == -1)
+      return;
+
+    var targetCard : CardsOnTable = this.playerTable[targetPosition];
+
+    targetCard['life'] *= 2;
+
+    this.playerTable[targetPosition] = targetCard;
+    this.updatePlayerTableOnPosition(targetPosition, targetCard);
+  }
+
+  performance() : void{
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.playerTable[x]['name'] != "vazio"){
+        this.playerTable[x]['life'] += 1;
+      }
+    }
+
+    for(var x = 0; x < this.playerTable.length; x++){
+      this.updatePlayerTableOnPosition(x, this.playerTable[x]);
+    }
+  }
+
+  purge() : void{
+    var newEnemyTable : Array<CardsOnTable> = this.enemyTable;
+    var emptyCard : CardsOnTable = {'attack': -1, 'cost': -1, 'enterTurn' : -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"], 'EffectsOver' : ["vazio"]};
+
+    for(var x = 0; x < newEnemyTable.length; x++){
+      if(newEnemyTable[x]['name'] != "vazio"){
+        newEnemyTable[x]['life'] -= 1;
+        if(newEnemyTable[x]['life'] <= 0)
+          newEnemyTable[x] = emptyCard;
+      }
+    }
+
+    for(var x = 0; x < newEnemyTable.length; x++){
+      this.enemyTable[x] = newEnemyTable[x];
+      this.updateEnemyTableOnPosition(x, newEnemyTable[x]);
     }
   }
 
@@ -934,6 +1203,10 @@ export class MatchComponent implements OnInit {
   changeTurn(){
     if(this.currentPlayer == "Seu turno"){
       //passa o turno
+
+      //zera as cartas que atacaram
+      this.cardsThatAttackedThisTurn = [0, 0, 0, 0, 0];
+
       if(this.whoIsThisPlayer == "Player1"){
         console.log("next turn of "+this.matchPlayer2);
         console.log(this.turn++);
@@ -960,10 +1233,18 @@ export class MatchComponent implements OnInit {
   setEnemyFieldTarget(field : number) : void{
     //field = 5 é a vida do oponente
 
-    var emptyCard : CardsOnTable = {'attack': -1, 'cost': -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"]};
+    var emptyCard : CardsOnTable = {'attack': -1, 'cost': -1, 'enterTurn' : -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"], 'EffectsOver' : ["vazio"]};
 
     //dar dano nas cartas
     if(this.attackingCard != null){
+      //verificar se é o turno que a carta entrou
+      if(this.attackingCard['enterTurn'] == this.turn)
+        return;
+
+      //verificar se a carta atacou
+      if(this.cardsThatAttackedThisTurn[this.attackingCardPosition] == 1)
+        return;
+
       if(field == 5){
         this.damageEnemy();
         return;
@@ -974,22 +1255,87 @@ export class MatchComponent implements OnInit {
       if(this.targetCardForAttack['id'] == "vazio" || this.attackingCard['id'] == "vazio")
         return;
 
+      //verificar se a carta não está sob efeito do charm
+      var effectsOnCard : Array<string> = this.attackingCard['EffectsOver'];
+      var charm : number = -1;
+      for(var x = 0; x < effectsOnCard.length; x++){
+        if(effectsOnCard[x] == "charmedByEnemyCardOnPosition0"){
+          charm = 0;
+        }
+        else if(effectsOnCard[x] == "charmedByEnemyCardOnPosition1"){
+          charm = 1;
+        }
+        else if(effectsOnCard[x] == "charmedByEnemyCardOnPosition2"){
+          charm = 2;
+        }
+        else if(effectsOnCard[x] == "charmedByEnemyCardOnPosition3"){
+          charm = 3;
+        }
+        else if(effectsOnCard[x] == "charmedByEnemyCardOnPosition4"){
+          charm = 4;
+        }
+
+        if(charm == field)
+          return;
+
+        charm = -1;
+      }
+
+      //verifique se tem immortal
+      var effectsOfAttackingCard : Array<string> = this.attackingCard['Effects'];
+      var attackingCardHasImmortal : boolean = false;
+
+      for(var x = 0; x < effectsOfAttackingCard.length; x++){
+        if(effectsOfAttackingCard[x] == "immortal"){
+            attackingCardHasImmortal = true;
+            break;
+        }
+      }
+
+      var effectsOfTargetCard : Array<string> = this.targetCardForAttack['Effects'];
+      var targetCardForAttackHasImmortal : boolean = false;
+
+      for(var x = 0; x < effectsOfTargetCard.length; x++){
+        if(effectsOfTargetCard[x] == "immortal"){
+            targetCardForAttackHasImmortal = true;
+            break;
+        }
+      }
+
+      var oldTargetCardForAttackLife = this.targetCardForAttack['life'];
+      var oldAttackingCardLife = this.attackingCard['life'];
+
       this.targetCardForAttack['life'] -= this.attackingCard['attack'];
       this.attackingCard['life'] -= this.targetCardForAttack['attack'];
 
-      if(this.targetCardForAttack['life'] <= 0)
+      if(this.targetCardForAttack['life'] <= 0){
+        this.enemyTable[field] = emptyCard;
         this.updateEnemyTableOnPosition(field, emptyCard);
-      else
-        this.updateEnemyTableOnPosition(field, this.targetCardForAttack);
+      }
+      else{
+        if(targetCardForAttackHasImmortal)
+          this.targetCardForAttack['life'] = oldTargetCardForAttackLife;
 
-      if(this.attackingCard['life'] <= 0)
-        this.updatePlayerTableOnPosition(field, emptyCard);
-      else
-        this.updatePlayerTableOnPosition(field, this.attackingCard);
+        this.enemyTable[field] = this.targetCardForAttack;
+        this.updateEnemyTableOnPosition(field, this.targetCardForAttack);
+      }
+
+      if(this.attackingCard['life'] <= 0){
+        this.playerTable[this.attackingCardPosition] = emptyCard;
+        this.updatePlayerTableOnPosition(this.attackingCardPosition, emptyCard);
+      }
+      else{
+        if(attackingCardHasImmortal)
+          this.attackingCard['life'] = oldAttackingCardLife;
+
+        this.cardsThatAttackedThisTurn[this.attackingCardPosition] = 1;
+        this.playerTable[this.attackingCardPosition] = this.attackingCard;
+        this.updatePlayerTableOnPosition(this.attackingCardPosition, this.attackingCard);
+      }
 
       this.attackingCard = null;
+      this.attackingCardPosition = -1;
       this.targetCardForAttack = null;
-      
     }
   }
 
@@ -1104,7 +1450,21 @@ export class MatchComponent implements OnInit {
   }
 
   damageEnemy(){
+    if(this.attackingCard['id'] == "vazio")
+      return;
 
+    this.cardsThatAttackedThisTurn[this.attackingCardPosition] = 1;
+
+    var enemyNewLife = this.enemyLife - this.attackingCard['attack'];
+
+    if(this.whoIsThisPlayer == "Player1"){
+      this.afs.collection('matches').doc(this.matchId).update({'player2Life' : enemyNewLife});
+    }
+    else if(this.whoIsThisPlayer == "Player2"){
+      this.afs.collection('matches').doc(this.matchId).update({'player1Life' : enemyNewLife});
+    }
+
+    this.attackingCard = null;
   }
 
   setPlayerFieldTarget(field : number) : void{

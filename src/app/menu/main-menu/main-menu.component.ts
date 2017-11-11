@@ -56,11 +56,17 @@ interface Cards{
 interface CardsOnTable{
   attack: number;
   cost: number;
+  enterTurn : number;
   id : string;
   life: number;
   name: string;
   rarity: number;
   Effects;
+  EffectsOver;
+}
+
+interface EffectsOver{
+  [effects: string] : string;
 }
 
 interface Effects{
@@ -79,11 +85,11 @@ interface Matches{
 }
 
 interface Player1Table{
-  [card: string] : Cards;
+  [card: string] : CardsOnTable;
 }
 
 interface Player2Table{
-  [card: string] : Cards;
+  [card: string] : CardsOnTable;
 }
 
 
@@ -147,8 +153,6 @@ export class MainMenuComponent implements OnInit {
           offset++;
         }
       }
-
-      console.log(this.matchesList);
 
       this.matchDoc = this.afs.doc('matches/'+this.authService.currentUserId);
       this.match$ = this.matchDoc.valueChanges();
@@ -233,7 +237,7 @@ export class MainMenuComponent implements OnInit {
   }
 
   createMatch(){
-    var firstTable : CardsOnTable = {'attack': -1, 'cost': -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"]};
+    var firstTable : CardsOnTable = {'attack': -1, 'cost': -1, 'enterTurn' : -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"], 'EffectsOver' : ["vazio"]};
 
     this.afs.collection('matches').doc(this.authService.currentUserId).set({
       'player1' : this.authService.currentUserId,
