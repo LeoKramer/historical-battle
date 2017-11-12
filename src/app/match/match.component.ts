@@ -822,8 +822,8 @@ export class MatchComponent implements OnInit {
         case("emancipate"):
           this.emancipate();
           break;
-        case("facism"):
-          this.facism();
+        case("fascism"):
+          this.fascism();
           break;
         case("holocaust"):
           this.holocaust(field);
@@ -979,7 +979,7 @@ export class MatchComponent implements OnInit {
     }
   }
 
-  facism(){
+  fascism(){
     var greatestAttack : number = -1;
     var greatestAttackPosition : number = -1;
     var emptyCard : CardsOnTable = {'attack': -1, 'cost': -1, 'enterTurn' : -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"], 'EffectsOver' : ["vazio"]};
@@ -991,7 +991,7 @@ export class MatchComponent implements OnInit {
       }
     }
 
-    if(greatestAttack != -1){
+    if(greatestAttackPosition != -1){
       this.enemyTable[greatestAttackPosition] = emptyCard;
       this.updateEnemyTableOnPosition(greatestAttackPosition, emptyCard);
     }
