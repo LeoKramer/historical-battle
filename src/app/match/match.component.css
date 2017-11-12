@@ -42,7 +42,7 @@ img{
 .enemyField{
 	margin-left: 18.5%;
 	margin-bottom: 10px;
-	padding: 6%;
+	padding: 4%;
 }
 
 .playerField{
@@ -62,17 +62,17 @@ img{
 
 #btn-enemyLife{
 	margin: 0px;
-	float: left;
+	margin-left: 42%;
 	width: 15%;
 }
 
 #btn-playerLife{
-	float: right;
+	float: left;
 	width: 15%;
 }
 
 #btn-historyBooks{
-	float: left;
+	float: right;
 	width: 15%;
 }
 
@@ -118,7 +118,7 @@ img{
 .enemyField .field1 img{
 	position: absolute;
 	left: 20.5%;
-	top: 12.25%;
+	top: 8%;
 	width: 8%;
 	height: 23.5%;
 }
@@ -126,7 +126,7 @@ img{
 .enemyField .field2 img{
 	position: absolute;
 	left: 32.7%;
-	top: 12.25%;
+	top: 8%;
 	width: 8%;
 	height: 23.5%;
 }
@@ -134,7 +134,7 @@ img{
 .enemyField .field3 img{
 	position: absolute;
 	left: 45%;
-	top: 12.25%;
+	top: 8%;
 	width: 8%;
 	height: 23.5%;
 }
@@ -142,7 +142,7 @@ img{
 .enemyField .field4 img{
 	position: absolute;
 	left: 57%;
-	top: 12.25%;
+	top: 8%;
 	width: 8%;
 	height: 23.5%;
 }
@@ -150,7 +150,7 @@ img{
 .enemyField .field5 img{
 	position: absolute;
 	left: 69%;
-	top: 12.25%;
+	top: 8%;
 	width: 8%;
 	height: 23.5%;
 }
@@ -245,6 +245,30 @@ img{
 	box-shadow:         0px 0px 30px 0px rgba(0, 255, 0, 0.67);
 }
 
+#canAttack img:hover{
+	-webkit-box-shadow: 0px 0px 30px 0px rgba(0, 255, 0, 0.67);
+	-moz-box-shadow:    0px 0px 30px 0px rgba(0, 255, 0, 0.67);
+	box-shadow:         0px 0px 30px 0px rgba(0, 255, 0, 0.67);
+}
+
+#cantAttack img:hover{
+	-webkit-box-shadow: 0px 0px 30px 0px rgba(255, 0, 0, 0.67);
+	-moz-box-shadow:    0px 0px 30px 0px rgba(255, 0, 0, 0.67);
+	box-shadow:         0px 0px 30px 0px rgba(255, 0, 0, 0.67);
+}
+
+#canCast img:hover{
+	-webkit-box-shadow: 0px 0px 30px 0px rgba(0, 255, 0, 0.67);
+	-moz-box-shadow:    0px 0px 30px 0px rgba(0, 255, 0, 0.67);
+	box-shadow:         0px 0px 30px 0px rgba(0, 255, 0, 0.67);
+}
+
+#cantCast img:hover{
+	-webkit-box-shadow: 0px 0px 30px 0px rgba(255, 0, 0, 0.67);
+	-moz-box-shadow:    0px 0px 30px 0px rgba(255, 0, 0, 0.67);
+	box-shadow:         0px 0px 30px 0px rgba(255, 0, 0, 0.67);
+}
+
 .field-image img:hover{
 	-webkit-box-shadow: 0px 0px 30px 0px rgba(255, 0, 0, 0.67);
 	-moz-box-shadow:    0px 0px 30px 0px rgba(255, 0, 0, 0.67);
@@ -257,4 +281,16 @@ img{
 	margin-top: 3.9%;
 	padding: 2.9%;
 	border: 2px solid white;
+}
+
+#lastActionBox{
+	background-color: rgba(55, 55, 55, 1);
+	position: absolute;
+	border-radius: 3px;
+	left : 35%;
+	font-weight: bold;
+	width: 30%;
+	border: 2px solid white;
+	padding: 5px;
+	text-align: center;
 }

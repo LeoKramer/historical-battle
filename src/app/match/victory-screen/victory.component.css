@@ -1,0 +1,18 @@
+.match-page{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0, 1);
+	color: rgb(255,255,255);
+}
+
+img{
+	size: cover;
+}
+
+.center{
+    width: 50%;
+    height: 30%;
+    margin-top: 10%;
+    margin-left: 25%;
+}

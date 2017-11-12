@@ -82,6 +82,7 @@ interface Matches{
   Player1Table;
   Player2Table;
   turn: number;
+  lastAction : string;
 }
 
 interface Player1Table{
@@ -247,7 +248,8 @@ export class MainMenuComponent implements OnInit {
       'currentPlayer' : this.authService.currentUserId,
       'Player1Table' : [firstTable, firstTable, firstTable, firstTable, firstTable],
       'Player2Table' : [firstTable, firstTable, firstTable, firstTable, firstTable],
-      'turn' : 1
+      'turn' : 1,
+      'lastAction' : "Prepare-se para a batalha!"
     });
   }
 

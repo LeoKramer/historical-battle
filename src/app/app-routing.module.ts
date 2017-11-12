@@ -10,6 +10,8 @@ import {DeckMenuComponent} from './menu/deck-menu/deck-menu.component';
 import {EditDeckComponent} from './menu/edit-deck/edit-deck.component';
 
 import {MatchComponent} from './match/match.component';
+import {DefeatComponent} from './match/defeat-screen/defeat.component';
+import {VictoryComponent} from './match/victory-screen/victory.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -18,7 +20,9 @@ const routes: Routes = [
   {path: 'signup', component: UserSignupComponent},
   {path: 'decks', component: DeckMenuComponent},
   {path: 'edit', component: EditDeckComponent},
-  {path: 'match', component: MatchComponent}
+  {path: 'match', component: MatchComponent},
+  {path: 'defeat', component: DefeatComponent},
+  {path: 'victory', component: VictoryComponent},
 ];
 
 @NgModule({

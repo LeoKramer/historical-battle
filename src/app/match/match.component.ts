@@ -82,6 +82,7 @@ interface Matches{
   Player1Table;
   Player2Table;
   turn: number;
+  lastAction : string;
 }
 
 interface Player1Table{
@@ -294,8 +295,24 @@ export class MatchComponent implements OnInit {
   attackingCardPosition : number = -1;
   targetCardForAttack : CardsOnTable = null;
 
+  gold : number = 0;
+
   //se a carta da posição do vetor equivalente a posição do campo atacou, muda para 1, senão é 0
   cardsThatAttackedThisTurn : Array<number> = [0, 0, 0, 0, 0];
+
+  lastAction : string = "Prepare-se para a batalha!";
+
+  cardOnPlayerField1CanAttack : string = "cantAttack";
+  cardOnPlayerField2CanAttack : string = "cantAttack";
+  cardOnPlayerField3CanAttack : string = "cantAttack";
+  cardOnPlayerField4CanAttack : string = "cantAttack";
+  cardOnPlayerField5CanAttack : string = "cantAttack";
+
+  cardOnPlayerHand1CanCast : string = "cantCast";
+  cardOnPlayerHand2CanCast : string = "cantCast";
+  cardOnPlayerHand3CanCast : string = "cantCast";
+  cardOnPlayerHand4CanCast : string = "cantCast";
+  cardOnPlayerHand5CanCast : string = "cantCast";
 
   constructor(public authService: AuthService, private afs : AngularFirestore, private router: Router, private data: DataService) {
     this.cardsCollectionRef = this.afs.collection<Cards>('cards');
@@ -316,12 +333,14 @@ export class MatchComponent implements OnInit {
       this.matchDoc = this.afs.doc('matches/'+ message);
       this.match$ = this.matchDoc.valueChanges();
       this.match$.subscribe(data => {
+            this.lastAction = data['lastAction'];
+
             //verifique o turno
             if(data['turn'] != this.turn){
               this.turn = data['turn'];
               this.availableBooks = this.turn;
             }
-            
+
             this.matchPlayer1 = data['player1'];
             this.matchPlayer2 = data['player2'];
 
@@ -348,6 +367,37 @@ export class MatchComponent implements OnInit {
               this.playerLife = data['player2Life'];
             }
 
+            //verifique se algum jogador perdeu
+            var player1Life = data['player1Life'];
+            if(player1Life <= 0){
+              if(data['player1'] == this.authService.currentUserId){
+                //tela de derrota
+                this.router.navigate(['/defeat']);
+                
+              }
+              else{
+                //tela de vitória
+                this.afs.collection('users').doc(this.authService.currentUserId).update({'gold' : this.gold+15});
+                this.router.navigate(['/victory']);
+              }
+              this.afs.collection('matches').doc(this.matchId).delete();
+            }
+
+            var player2Life = data['player2Life'];
+            if(player2Life <= 0){
+              if(data['player2'] == this.authService.currentUserId){
+                //tela de derrota
+                this.router.navigate(['/defeat']);
+              }
+              else{
+                //tela de vitória
+                this.afs.collection('users').doc(this.authService.currentUserId).update({'gold' : this.gold+15});
+                this.router.navigate(['/victory']);
+              }
+
+              this.afs.collection('matches').doc(this.matchId).delete();
+            }
+
             //verificar o campo
             for(var x = 0; x < 5; x++){
               if(this.whoIsThisPlayer == "Player1"){
@@ -359,13 +409,13 @@ export class MatchComponent implements OnInit {
                 this.enemyTable[x] = data['Player1Table'][x];
               }
             }
-            var char : string = "";
+            var empty : string = "";
             var cost : string = "";
             var attack : string = "";
             var life : string = "";
             var name : string = "";
 
-            char = 'assets/images/card/chars/default.png';
+            empty = 'assets/images/card/chars/default.png';
             cost = 'assets/images/card/GoldLevel.png';
             attack = 'assets/images/card/Markers.png';
             life = 'assets/images/card/Markers.png';
@@ -373,11 +423,14 @@ export class MatchComponent implements OnInit {
 
             if(data['player1'] == this.authService.currentUserId){
               if(data['Player1Table'][0]['name'] == "vazio"){
-                this.playerField1CardChar = char;
-                this.playerField1CardCost = cost;
-                this.playerField1CardAttack = attack;
-                this.playerField1CardLife = life;
-                this.playerField1CardName = name;
+                this.playerField1CardChar = empty;
+                this.playerField1CardCost = empty;
+                this.playerField1CardAttack = empty;
+                this.playerField1CardLife = empty;
+                this.playerField1CardName = empty;
+                this.playerField1CardVoid = empty;
+                this.playerField1CardCurtain = empty;
+                this.playerField1CardCave = empty;
               }
               else{
                 this.playerField1CardChar = 'assets/images/card/chars/'+data['Player1Table'][0]['id']+'.png';
@@ -385,14 +438,20 @@ export class MatchComponent implements OnInit {
                 this.playerField1CardAttack = 'assets/images/card/attacks/'+data['Player1Table'][0]['attack']+'.png';
                 this.playerField1CardLife = 'assets/images/card/lifes/'+data['Player1Table'][0]['life']+'.png';
                 this.playerField1CardName = 'assets/images/card/names/'+data['Player1Table'][0]['id']+'.png';
+                this.playerField1CardVoid = 'assets/images/card/effects/'+data['Player1Table'][0]['id']+'.png';
+                this.playerField1CardCurtain = this.curtain;
+                this.playerField1CardCave = this.cave;
               }
 
               if(data['Player1Table'][1]['name'] == "vazio"){
-                this.playerField2CardChar = char;
-                this.playerField2CardCost = cost;
-                this.playerField2CardAttack = attack;
-                this.playerField2CardLife = life;
-                this.playerField2CardName = name;
+                this.playerField2CardChar = empty;
+                this.playerField2CardCost = empty;
+                this.playerField2CardAttack = empty;
+                this.playerField2CardLife = empty;
+                this.playerField2CardName = empty;
+                this.playerField2CardVoid = empty;
+                this.playerField2CardCurtain = empty;
+                this.playerField2CardCave = empty;
               }
               else{
                 this.playerField2CardChar = 'assets/images/card/chars/'+data['Player1Table'][1]['id']+'.png';
@@ -400,14 +459,20 @@ export class MatchComponent implements OnInit {
                 this.playerField2CardAttack = 'assets/images/card/attacks/'+data['Player1Table'][1]['attack']+'.png';
                 this.playerField2CardLife = 'assets/images/card/lifes/'+data['Player1Table'][1]['life']+'.png';
                 this.playerField2CardName = 'assets/images/card/names/'+data['Player1Table'][1]['id']+'.png';
+                this.playerField2CardVoid = 'assets/images/card/effects/'+data['Player1Table'][1]['id']+'.png';
+                this.playerField2CardCurtain = this.curtain;
+                this.playerField2CardCave = this.cave;
               }
 
               if(data['Player1Table'][2]['name'] == "vazio"){
-                this.playerField3CardChar = char;
-                this.playerField3CardCost = cost;
-                this.playerField3CardAttack = attack;
-                this.playerField3CardLife = life;
-                this.playerField3CardName = name;
+                this.playerField3CardChar = empty;
+                this.playerField3CardCost = empty;
+                this.playerField3CardAttack = empty;
+                this.playerField3CardLife = empty;
+                this.playerField3CardName = empty;
+                this.playerField3CardVoid = empty;
+                this.playerField3CardCurtain = empty;
+                this.playerField3CardCave = empty;
               }
               else{
                 this.playerField3CardChar = 'assets/images/card/chars/'+data['Player1Table'][2]['id']+'.png';
@@ -415,14 +480,20 @@ export class MatchComponent implements OnInit {
                 this.playerField3CardAttack = 'assets/images/card/attacks/'+data['Player1Table'][2]['attack']+'.png';
                 this.playerField3CardLife = 'assets/images/card/lifes/'+data['Player1Table'][2]['life']+'.png';
                 this.playerField3CardName = 'assets/images/card/names/'+data['Player1Table'][2]['id']+'.png';
+                this.playerField3CardVoid = 'assets/images/card/effects/'+data['Player1Table'][2]['id']+'.png';
+                this.playerField3CardCurtain = this.curtain;
+                this.playerField3CardCave = this.cave;
               }
 
               if(data['Player1Table'][3]['name'] == "vazio"){
-                this.playerField4CardChar = char;
-                this.playerField4CardCost = cost;
-                this.playerField4CardAttack = attack;
-                this.playerField4CardLife = life;
-                this.playerField4CardName = name;
+                this.playerField4CardChar = empty;
+                this.playerField4CardCost = empty;
+                this.playerField4CardAttack = empty;
+                this.playerField4CardLife = empty;
+                this.playerField4CardName = empty;
+                this.playerField4CardVoid = empty;
+                this.playerField4CardCurtain = empty;
+                this.playerField4CardCave = empty;
               }
               else{
                 this.playerField4CardChar = 'assets/images/card/chars/'+data['Player1Table'][3]['id']+'.png';
@@ -430,15 +501,21 @@ export class MatchComponent implements OnInit {
                 this.playerField4CardAttack = 'assets/images/card/attacks/'+data['Player1Table'][3]['attack']+'.png';
                 this.playerField4CardLife = 'assets/images/card/lifes/'+data['Player1Table'][3]['life']+'.png';
                 this.playerField4CardName = 'assets/images/card/names/'+data['Player1Table'][3]['id']+'.png';
+                this.playerField4CardVoid = 'assets/images/card/effects/'+data['Player1Table'][3]['id']+'.png';
+                this.playerField4CardCurtain = this.curtain;
+                this.playerField4CardCave = this.cave;
 
               }
 
               if(data['Player1Table'][4]['name'] == "vazio"){
-                this.playerField5CardChar = char;
-                this.playerField5CardCost = cost;
-                this.playerField5CardAttack = attack;
-                this.playerField5CardLife = life;
-                this.playerField5CardName = name;
+                this.playerField5CardChar = empty;
+                this.playerField5CardCost = empty;
+                this.playerField5CardAttack = empty;
+                this.playerField5CardLife = empty;
+                this.playerField5CardName = empty;
+                this.playerField5CardVoid = empty;
+                this.playerField5CardCurtain = empty;
+                this.playerField5CardCave = empty;
               }
               else{
                 this.playerField5CardChar = 'assets/images/card/chars/'+data['Player1Table'][4]['id']+'.png';
@@ -446,14 +523,20 @@ export class MatchComponent implements OnInit {
                 this.playerField5CardAttack = 'assets/images/card/attacks/'+data['Player1Table'][4]['attack']+'.png';
                 this.playerField5CardLife = 'assets/images/card/lifes/'+data['Player1Table'][4]['life']+'.png';
                 this.playerField5CardName = 'assets/images/card/names/'+data['Player1Table'][4]['id']+'.png';
+                this.playerField5CardVoid = 'assets/images/card/effects/'+data['Player1Table'][4]['id']+'.png';
+                this.playerField5CardCurtain = this.curtain;
+                this.playerField5CardCave = this.cave;
               }
 
               if(data['Player2Table'][0]['name'] == "vazio"){
-                this.enemyField1CardChar = char;
-                this.enemyField1CardCost = cost;
-                this.enemyField1CardAttack = attack;
-                this.enemyField1CardLife = life;
-                this.enemyField1CardName = name;
+                this.enemyField1CardChar = empty;
+                this.enemyField1CardCost = empty;
+                this.enemyField1CardAttack = empty;
+                this.enemyField1CardLife = empty;
+                this.enemyField1CardName = empty;
+                this.enemyField1CardVoid = empty;
+                this.enemyField1CardCurtain = empty;
+                this.enemyField1CardCave = empty;
               }
               else{
                 this.enemyField1CardChar = 'assets/images/card/chars/'+data['Player2Table'][0]['id']+'.png';
@@ -461,14 +544,20 @@ export class MatchComponent implements OnInit {
                 this.enemyField1CardAttack = 'assets/images/card/attacks/'+data['Player2Table'][0]['attack']+'.png';
                 this.enemyField1CardLife = 'assets/images/card/lifes/'+data['Player2Table'][0]['life']+'.png';
                 this.enemyField1CardName = 'assets/images/card/names/'+data['Player2Table'][0]['id']+'.png';
+                this.enemyField1CardVoid = 'assets/images/card/effects/'+data['Player2Table'][0]['id']+'.png';
+                this.enemyField1CardCurtain = this.curtain;
+                this.enemyField1CardCave = this.cave;
               }
 
               if(data['Player2Table'][1]['name'] == "vazio"){
-                this.enemyField2CardChar = char;
-                this.enemyField2CardCost = cost;
-                this.enemyField2CardAttack = attack;
-                this.enemyField2CardLife = life;
-                this.enemyField2CardName = name;
+                this.enemyField2CardChar = empty;
+                this.enemyField2CardCost = empty;
+                this.enemyField2CardAttack = empty;
+                this.enemyField2CardLife = empty;
+                this.enemyField2CardName = empty;
+                this.enemyField2CardVoid = empty;
+                this.enemyField2CardCurtain = empty;
+                this.enemyField2CardCave = empty;
               }
               else{
                 this.enemyField2CardChar = 'assets/images/card/chars/'+data['Player2Table'][1]['id']+'.png';
@@ -476,14 +565,20 @@ export class MatchComponent implements OnInit {
                 this.enemyField2CardAttack = 'assets/images/card/attacks/'+data['Player2Table'][1]['attack']+'.png';
                 this.enemyField2CardLife = 'assets/images/card/lifes/'+data['Player2Table'][1]['life']+'.png';
                 this.enemyField2CardName = 'assets/images/card/names/'+data['Player2Table'][1]['id']+'.png';
+                this.enemyField2CardVoid = 'assets/images/card/effects/'+data['Player2Table'][1]['id']+'.png';
+                this.enemyField2CardCurtain = this.curtain;
+                this.enemyField2CardCave = this.cave;
               }
 
               if(data['Player2Table'][2]['name'] == "vazio"){
-                this.enemyField3CardChar = char;
-                this.enemyField3CardCost = cost;
-                this.enemyField3CardAttack = attack;
-                this.enemyField3CardLife = life;
-                this.enemyField3CardName = name;
+                this.enemyField3CardChar = empty;
+                this.enemyField3CardCost = empty;
+                this.enemyField3CardAttack = empty;
+                this.enemyField3CardLife = empty;
+                this.enemyField3CardName = empty;
+                this.enemyField3CardVoid = empty;
+                this.enemyField3CardCurtain = empty;
+                this.enemyField3CardCave = empty;
               }
               else{
                 this.enemyField3CardChar = 'assets/images/card/chars/'+data['Player2Table'][2]['id']+'.png';
@@ -491,15 +586,21 @@ export class MatchComponent implements OnInit {
                 this.enemyField3CardAttack = 'assets/images/card/attacks/'+data['Player2Table'][2]['attack']+'.png';
                 this.enemyField3CardLife = 'assets/images/card/lifes/'+data['Player2Table'][2]['life']+'.png';
                 this.enemyField3CardName = 'assets/images/card/names/'+data['Player2Table'][2]['id']+'.png';
+                this.enemyField3CardVoid = 'assets/images/card/effects/'+data['Player2Table'][2]['id']+'.png';
+                this.enemyField3CardCurtain = this.curtain;
+                this.enemyField3CardCave = this.cave;
 
               }
 
               if(data['Player2Table'][3]['name'] == "vazio"){
-                this.enemyField4CardChar = char;
-                this.enemyField4CardCost = cost;
-                this.enemyField4CardAttack = attack;
-                this.enemyField4CardLife = life;
-                this.enemyField4CardName = name;
+                this.enemyField4CardChar = empty;
+                this.enemyField4CardCost = empty;
+                this.enemyField4CardAttack = empty;
+                this.enemyField4CardLife = empty;
+                this.enemyField4CardName = empty;
+                this.enemyField4CardVoid = empty;
+                this.enemyField4CardCurtain = empty;
+                this.enemyField4CardCave = empty;
               }
               else{
                 this.enemyField4CardChar = 'assets/images/card/chars/'+data['Player2Table'][3]['id']+'.png';
@@ -507,14 +608,20 @@ export class MatchComponent implements OnInit {
                 this.enemyField4CardAttack = 'assets/images/card/attacks/'+data['Player2Table'][3]['attack']+'.png';
                 this.enemyField4CardLife = 'assets/images/card/lifes/'+data['Player2Table'][3]['life']+'.png';
                 this.enemyField4CardName = 'assets/images/card/names/'+data['Player2Table'][3]['id']+'.png';
+                this.enemyField4CardVoid = 'assets/images/card/effects/'+data['Player2Table'][3]['id']+'.png';
+                this.enemyField4CardCurtain = this.curtain;
+                this.enemyField4CardCave = this.cave;
               }
 
               if(data['Player2Table'][4]['name'] == "vazio"){
-                this.enemyField5CardChar = char;
-                this.enemyField5CardCost = cost;
-                this.enemyField5CardAttack = attack;
-                this.enemyField5CardLife = life;
-                this.enemyField5CardName = name;
+                this.enemyField5CardChar = empty;
+                this.enemyField5CardCost = empty;
+                this.enemyField5CardAttack = empty;
+                this.enemyField5CardLife = empty;
+                this.enemyField5CardName = empty;
+                this.enemyField5CardVoid = empty;
+                this.enemyField5CardCurtain = empty;
+                this.enemyField5CardCave = empty;
               }
               else{
                 this.enemyField5CardChar = 'assets/images/card/chars/'+data['Player2Table'][4]['id']+'.png';
@@ -522,15 +629,21 @@ export class MatchComponent implements OnInit {
                 this.enemyField5CardAttack = 'assets/images/card/attacks/'+data['Player2Table'][4]['attack']+'.png';
                 this.enemyField5CardLife = 'assets/images/card/lifes/'+data['Player2Table'][4]['life']+'.png';
                 this.enemyField5CardName = 'assets/images/card/names/'+data['Player2Table'][4]['id']+'.png';
+                this.enemyField5CardVoid = 'assets/images/card/effects/'+data['Player2Table'][4]['id']+'.png';
+                this.enemyField5CardCurtain = this.curtain;
+                this.enemyField5CardCave = this.cave;
               }
             }
             else if(data['player2'] == this.authService.currentUserId){
               if(data['Player2Table'][0]['name'] == "vazio"){
-                this.playerField1CardChar = char;
-                this.playerField1CardCost = cost;
-                this.playerField1CardAttack = attack;
-                this.playerField1CardLife = life;
-                this.playerField1CardName = name;
+                this.playerField1CardChar = empty;
+                this.playerField1CardCost = empty;
+                this.playerField1CardAttack = empty;
+                this.playerField1CardLife = empty;
+                this.playerField1CardName = empty;
+                this.playerField1CardVoid = empty;
+                this.playerField1CardCurtain = empty;
+                this.playerField1CardCave = empty;
               }
               else{
                 this.playerField1CardChar = 'assets/images/card/chars/'+data['Player2Table'][0]['id']+'.png';
@@ -538,14 +651,20 @@ export class MatchComponent implements OnInit {
                 this.playerField1CardAttack = 'assets/images/card/attacks/'+data['Player2Table'][0]['attack']+'.png';
                 this.playerField1CardLife = 'assets/images/card/lifes/'+data['Player2Table'][0]['life']+'.png';
                 this.playerField1CardName = 'assets/images/card/names/'+data['Player2Table'][0]['id']+'.png';
+                this.playerField1CardVoid = 'assets/images/card/effects/'+data['Player2Table'][0]['id']+'.png';
+                this.playerField1CardCurtain = this.curtain;
+                this.playerField1CardCave = this.cave;
               }
 
               if(data['Player2Table'][1]['name'] == "vazio"){
-                this.playerField2CardChar = char;
-                this.playerField2CardCost = cost;
-                this.playerField2CardAttack = attack;
-                this.playerField2CardLife = life;
-                this.playerField2CardName = name;
+                this.playerField2CardChar = empty;
+                this.playerField2CardCost = empty;
+                this.playerField2CardAttack = empty;
+                this.playerField2CardLife = empty;
+                this.playerField2CardName = empty;
+                this.playerField2CardVoid = empty;
+                this.playerField2CardCurtain = empty;
+                this.playerField2CardCave = empty;
               }
               else{
                 this.playerField2CardChar = 'assets/images/card/chars/'+data['Player2Table'][1]['id']+'.png';
@@ -553,14 +672,20 @@ export class MatchComponent implements OnInit {
                 this.playerField2CardAttack = 'assets/images/card/attacks/'+data['Player2Table'][1]['attack']+'.png';
                 this.playerField2CardLife = 'assets/images/card/lifes/'+data['Player2Table'][1]['life']+'.png';
                 this.playerField2CardName = 'assets/images/card/names/'+data['Player2Table'][1]['id']+'.png';
+                this.playerField2CardVoid = 'assets/images/card/effects/'+data['Player2Table'][1]['id']+'.png';
+                this.playerField2CardCurtain = this.curtain;
+                this.playerField2CardCave = this.cave;
               }
 
               if(data['Player2Table'][2]['name'] == "vazio"){
-                this.playerField3CardChar = char;
-                this.playerField3CardCost = cost;
-                this.playerField3CardAttack = attack;
-                this.playerField3CardLife = life;
-                this.playerField3CardName = name;
+                this.playerField3CardChar = empty;
+                this.playerField3CardCost = empty;
+                this.playerField3CardAttack = empty;
+                this.playerField3CardLife = empty;
+                this.playerField3CardName = empty;
+                this.playerField3CardVoid = empty;
+                this.playerField3CardCurtain = empty;
+                this.playerField3CardCave = empty;
               }
               else{
                 this.playerField3CardChar = 'assets/images/card/chars/'+data['Player2Table'][2]['id']+'.png';
@@ -568,14 +693,20 @@ export class MatchComponent implements OnInit {
                 this.playerField3CardAttack = 'assets/images/card/attacks/'+data['Player2Table'][2]['attack']+'.png';
                 this.playerField3CardLife = 'assets/images/card/lifes/'+data['Player2Table'][2]['life']+'.png';
                 this.playerField3CardName = 'assets/images/card/names/'+data['Player2Table'][2]['id']+'.png';
+                this.playerField3CardVoid = 'assets/images/card/effects/'+data['Player2Table'][2]['id']+'.png';
+                this.playerField3CardCurtain = this.curtain;
+                this.playerField3CardCave = this.cave;
               }
 
               if(data['Player2Table'][3]['name'] == "vazio"){
-                this.playerField4CardChar = char;
-                this.playerField4CardCost = cost;
-                this.playerField4CardAttack = attack;
-                this.playerField4CardLife = life;
-                this.playerField4CardName = name;
+                this.playerField4CardChar = empty;
+                this.playerField4CardCost = empty;
+                this.playerField4CardAttack = empty;
+                this.playerField4CardLife = empty;
+                this.playerField4CardName = empty;
+                this.playerField4CardVoid = empty;
+                this.playerField4CardCurtain = empty;
+                this.playerField4CardCave = empty;
               }
               else{
                 this.playerField4CardChar = 'assets/images/card/chars/'+data['Player2Table'][3]['id']+'.png';
@@ -583,14 +714,20 @@ export class MatchComponent implements OnInit {
                 this.playerField4CardAttack = 'assets/images/card/attacks/'+data['Player2Table'][3]['attack']+'.png';
                 this.playerField4CardLife = 'assets/images/card/lifes/'+data['Player2Table'][3]['life']+'.png';
                 this.playerField4CardName = 'assets/images/card/names/'+data['Player2Table'][3]['id']+'.png';
+                this.playerField4CardVoid = 'assets/images/card/effects/'+data['Player2Table'][3]['id']+'.png';
+                this.playerField4CardCurtain = this.curtain;
+                this.playerField4CardCave = this.cave;
               }
 
               if(data['Player2Table'][4]['name'] == "vazio"){
-                this.playerField5CardChar = char;
-                this.playerField5CardCost = cost;
-                this.playerField5CardAttack = attack;
-                this.playerField5CardLife = life;
-                this.playerField5CardName = name;
+                this.playerField5CardChar = empty;
+                this.playerField5CardCost = empty;
+                this.playerField5CardAttack = empty;
+                this.playerField5CardLife = empty;
+                this.playerField5CardName = empty;
+                this.playerField5CardVoid = empty;
+                this.playerField5CardCurtain = empty;
+                this.playerField5CardCave = empty;
               }
               else{
                 this.playerField5CardChar = 'assets/images/card/chars/'+data['Player2Table'][4]['id']+'.png';
@@ -598,14 +735,20 @@ export class MatchComponent implements OnInit {
                 this.playerField5CardAttack = 'assets/images/card/attacks/'+data['Player2Table'][4]['attack']+'.png';
                 this.playerField5CardLife = 'assets/images/card/lifes/'+data['Player2Table'][4]['life']+'.png';
                 this.playerField5CardName = 'assets/images/card/names/'+data['Player2Table'][4]['id']+'.png';
+                this.playerField5CardVoid = 'assets/images/card/effects/'+data['Player2Table'][4]['id']+'.png';
+                this.playerField5CardCurtain = this.curtain;
+                this.playerField5CardCave = this.cave;
               }
 
               if(data['Player1Table'][0]['name'] == "vazio"){
-                this.enemyField1CardChar = char;
-                this.enemyField1CardCost = cost;
-                this.enemyField1CardAttack = attack;
-                this.enemyField1CardLife = life;
-                this.enemyField1CardName = name;
+                this.enemyField1CardChar = empty;
+                this.enemyField1CardCost = empty;
+                this.enemyField1CardAttack = empty;
+                this.enemyField1CardLife = empty;
+                this.enemyField1CardName = empty;
+                this.enemyField1CardVoid = empty;
+                this.enemyField1CardCurtain = empty;
+                this.enemyField1CardCave = empty;
               }
               else{
                 this.enemyField1CardChar = 'assets/images/card/chars/'+data['Player1Table'][0]['id']+'.png';
@@ -613,14 +756,20 @@ export class MatchComponent implements OnInit {
                 this.enemyField1CardAttack = 'assets/images/card/attacks/'+data['Player1Table'][0]['attack']+'.png';
                 this.enemyField1CardLife = 'assets/images/card/lifes/'+data['Player1Table'][0]['life']+'.png';
                 this.enemyField1CardName = 'assets/images/card/names/'+data['Player1Table'][0]['id']+'.png';
+                this.enemyField1CardVoid = 'assets/images/card/effects/'+data['Player1Table'][0]['id']+'.png';
+                this.enemyField1CardCurtain = this.curtain;
+                this.enemyField1CardCave = this.cave;
               }
 
               if(data['Player1Table'][1]['name'] == "vazio"){
-                this.enemyField2CardChar = char;
-                this.enemyField2CardCost = cost;
-                this.enemyField2CardAttack = attack;
-                this.enemyField2CardLife = life;
-                this.enemyField2CardName = name;
+                this.enemyField2CardChar = empty;
+                this.enemyField2CardCost = empty;
+                this.enemyField2CardAttack = empty;
+                this.enemyField2CardLife = empty;
+                this.enemyField2CardName = empty;
+                this.enemyField2CardVoid = empty;
+                this.enemyField2CardCurtain = empty;
+                this.enemyField2CardCave = empty;
               }
               else{
                 this.enemyField2CardChar = 'assets/images/card/chars/'+data['Player1Table'][1]['id']+'.png';
@@ -628,14 +777,20 @@ export class MatchComponent implements OnInit {
                 this.enemyField2CardAttack = 'assets/images/card/attacks/'+data['Player1Table'][1]['attack']+'.png';
                 this.enemyField2CardLife = 'assets/images/card/lifes/'+data['Player1Table'][1]['life']+'.png';
                 this.enemyField2CardName = 'assets/images/card/names/'+data['Player1Table'][1]['id']+'.png';
+                this.enemyField2CardVoid = 'assets/images/card/effects/'+data['Player1Table'][1]['id']+'.png';
+                this.enemyField2CardCurtain = this.curtain;
+                this.enemyField2CardCave = this.cave;
               }
                 
               if(data['Player1Table'][2]['name'] == "vazio"){
-                this.enemyField3CardChar = char;
-                this.enemyField3CardCost = cost;
-                this.enemyField3CardAttack = attack;
-                this.enemyField3CardLife = life;
-                this.enemyField3CardName = name;
+                this.enemyField3CardChar = empty;
+                this.enemyField3CardCost = empty;
+                this.enemyField3CardAttack = empty;
+                this.enemyField3CardLife = empty;
+                this.enemyField3CardName = empty;
+                this.enemyField3CardVoid = empty;
+                this.enemyField3CardCurtain = empty;
+                this.enemyField3CardCave = empty;
               }
               else{
                 this.enemyField3CardChar = 'assets/images/card/chars/'+data['Player1Table'][2]['id']+'.png';
@@ -643,14 +798,20 @@ export class MatchComponent implements OnInit {
                 this.enemyField3CardAttack = 'assets/images/card/attacks/'+data['Player1Table'][2]['attack']+'.png';
                 this.enemyField3CardLife = 'assets/images/card/lifes/'+data['Player1Table'][2]['life']+'.png';
                 this.enemyField3CardName = 'assets/images/card/names/'+data['Player1Table'][2]['id']+'.png';
+                this.enemyField3CardVoid = 'assets/images/card/effects/'+data['Player1Table'][2]['id']+'.png';
+                this.enemyField3CardCurtain = this.curtain;
+                this.enemyField3CardCave = this.cave;
               }
                 
               if(data['Player1Table'][3]['name'] == "vazio"){
-                this.enemyField4CardChar = char;
-                this.enemyField4CardCost = cost;
-                this.enemyField4CardAttack = attack;
-                this.enemyField4CardLife = life;
-                this.enemyField4CardName = name;
+                this.enemyField4CardChar = empty;
+                this.enemyField4CardCost = empty;
+                this.enemyField4CardAttack = empty;
+                this.enemyField4CardLife = empty;
+                this.enemyField4CardName = empty;
+                this.enemyField4CardVoid = empty;
+                this.enemyField4CardCurtain = empty;
+                this.enemyField4CardCave = empty;
               }
               else{
                 this.enemyField4CardChar = 'assets/images/card/chars/'+data['Player1Table'][3]['id']+'.png';
@@ -658,14 +819,20 @@ export class MatchComponent implements OnInit {
                 this.enemyField4CardAttack = 'assets/images/card/attacks/'+data['Player1Table'][3]['attack']+'.png';
                 this.enemyField4CardLife = 'assets/images/card/lifes/'+data['Player1Table'][3]['life']+'.png';
                 this.enemyField4CardName = 'assets/images/card/names/'+data['Player1Table'][3]['id']+'.png';
+                this.enemyField4CardVoid = 'assets/images/card/effects/'+data['Player1Table'][3]['id']+'.png';
+                this.enemyField4CardCurtain = this.curtain;
+                this.enemyField4CardCave = this.cave;
               }
 
               if(data['Player1Table'][4]['name'] == "vazio"){
-                this.enemyField5CardChar = char;
-                this.enemyField5CardCost = cost;
-                this.enemyField5CardAttack = attack;
-                this.enemyField5CardLife = life;
-                this.enemyField5CardName = name;
+                this.enemyField5CardChar = empty;
+                this.enemyField5CardCost = empty;
+                this.enemyField5CardAttack = empty;
+                this.enemyField5CardLife = empty;
+                this.enemyField5CardName = empty;
+                this.enemyField5CardVoid = empty;
+                this.enemyField5CardCurtain = empty;
+                this.enemyField5CardCave = empty;
               }
               else{
                 this.enemyField5CardChar = 'assets/images/card/chars/'+data['Player1Table'][4]['id']+'.png';
@@ -673,10 +840,39 @@ export class MatchComponent implements OnInit {
                 this.enemyField5CardAttack = 'assets/images/card/attacks/'+data['Player1Table'][4]['attack']+'.png';
                 this.enemyField5CardLife = 'assets/images/card/lifes/'+data['Player1Table'][4]['life']+'.png';
                 this.enemyField5CardName = 'assets/images/card/names/'+data['Player1Table'][4]['id']+'.png';
+                this.enemyField5CardVoid = 'assets/images/card/effects/'+data['Player1Table'][4]['id']+'.png';
+                this.enemyField5CardCurtain = this.curtain;
+                this.enemyField5CardCave = this.cave;
               }
             }
 
+            if(this.playerTable[0]['enterTurn'] == this.turn || this.playerTable[0]['enterTurn'] == -1)
+              this.cardOnPlayerField1CanAttack = "cantAttack";
+            else
+              this.cardOnPlayerField1CanAttack = "canAttack";
+
+            if(this.playerTable[1]['enterTurn'] == this.turn || this.playerTable[1]['enterTurn'] == -1)
+              this.cardOnPlayerField2CanAttack = "cantAttack";
+            else
+              this.cardOnPlayerField2CanAttack = "canAttack";
+
+            if(this.playerTable[2]['enterTurn'] == this.turn || this.playerTable[2]['enterTurn'] == -1)
+              this.cardOnPlayerField3CanAttack = "cantAttack";
+            else
+              this.cardOnPlayerField3CanAttack = "canAttack";
+
+            if(this.playerTable[3]['enterTurn'] == this.turn || this.playerTable[3]['enterTurn'] == -1)
+              this.cardOnPlayerField4CanAttack = "cantAttack";
+            else
+              this.cardOnPlayerField4CanAttack = "canAttack";
+
+            if(this.playerTable[4]['enterTurn'] == this.turn || this.playerTable[4]['enterTurn'] == -1)
+              this.cardOnPlayerField5CanAttack = "cantAttack";
+            else
+              this.cardOnPlayerField5CanAttack = "canAttack";
+
         this.user$.subscribe(data => {
+          this.gold = data['gold'];
           var defaultdeck : string = data['defaultDeck'];
           console.log(data[defaultdeck]);
           for(var x = 0; x < data[defaultdeck].length; x++){
@@ -722,30 +918,51 @@ export class MatchComponent implements OnInit {
               this.playerHand1CardAttack = 'assets/images/card/attacks/'+this.matchCards[0]['attack']+'.png';
               this.playerHand1CardLife = 'assets/images/card/lifes/'+this.matchCards[0]['life']+'.png';
               this.playerHand1CardName = 'assets/images/card/names/'+this.matchCards[0]['id']+'.png';
+              this.playerHand1CardVoid = 'assets/images/card/effects/'+this.matchCards[0]['id']+'.png';
+              this.playerHand1CardCurtain = this.curtain;
+              this.playerHand1CardCave = this.cave;
 
               this.playerHand2CardChar = 'assets/images/card/chars/'+this.matchCards[1]['id']+'.png';
               this.playerHand2CardCost = 'assets/images/card/costs/'+this.matchCards[1]['cost']+'.png';
               this.playerHand2CardAttack = 'assets/images/card/attacks/'+this.matchCards[1]['attack']+'.png';
               this.playerHand2CardLife = 'assets/images/card/lifes/'+this.matchCards[1]['life']+'.png';
               this.playerHand2CardName = 'assets/images/card/names/'+this.matchCards[1]['id']+'.png';
+              this.playerHand2CardVoid = 'assets/images/card/effects/'+this.matchCards[1]['id']+'.png';
+              this.playerHand2CardCurtain = this.curtain;
+              this.playerHand2CardCave = this.cave;
 
               this.playerHand3CardChar = 'assets/images/card/chars/'+this.matchCards[2]['id']+'.png';
               this.playerHand3CardCost = 'assets/images/card/costs/'+this.matchCards[2]['cost']+'.png';
               this.playerHand3CardAttack = 'assets/images/card/attacks/'+this.matchCards[2]['attack']+'.png';
               this.playerHand3CardLife = 'assets/images/card/lifes/'+this.matchCards[2]['life']+'.png';
               this.playerHand3CardName = 'assets/images/card/names/'+this.matchCards[2]['id']+'.png';
+              this.playerHand3CardVoid = 'assets/images/card/effects/'+this.matchCards[2]['id']+'.png';
+              this.playerHand3CardCurtain = this.curtain;
+              this.playerHand3CardCave = this.cave;
 
               this.playerHand4CardChar = 'assets/images/card/chars/'+this.matchCards[3]['id']+'.png';
               this.playerHand4CardCost = 'assets/images/card/costs/'+this.matchCards[3]['cost']+'.png';
               this.playerHand4CardAttack = 'assets/images/card/attacks/'+this.matchCards[3]['attack']+'.png';
               this.playerHand4CardLife = 'assets/images/card/lifes/'+this.matchCards[3]['life']+'.png';
               this.playerHand4CardName = 'assets/images/card/names/'+this.matchCards[3]['id']+'.png';
+              this.playerHand4CardVoid = 'assets/images/card/effects/'+this.matchCards[3]['id']+'.png';
+              this.playerHand4CardCurtain = this.curtain;
+              this.playerHand4CardCave = this.cave;
 
               this.playerHand5CardChar = 'assets/images/card/chars/'+this.matchCards[4]['id']+'.png';
               this.playerHand5CardCost = 'assets/images/card/costs/'+this.matchCards[4]['cost']+'.png';
               this.playerHand5CardAttack = 'assets/images/card/attacks/'+this.matchCards[4]['attack']+'.png';
               this.playerHand5CardLife = 'assets/images/card/lifes/'+this.matchCards[4]['life']+'.png';
               this.playerHand5CardName = 'assets/images/card/names/'+this.matchCards[4]['id']+'.png';
+              this.playerHand5CardVoid = 'assets/images/card/effects/'+this.matchCards[4]['id']+'.png';
+              this.playerHand5CardCurtain = this.curtain;
+              this.playerHand5CardCave = this.cave;
+
+              this.cardOnPlayerHand1CanCast = "canCast";
+              this.cardOnPlayerHand2CanCast = "canCast";
+              this.cardOnPlayerHand3CanCast = "canCast";
+              this.cardOnPlayerHand4CanCast = "canCast";
+              this.cardOnPlayerHand5CanCast = "canCast";
 
               this.lastCardGot = 4;
               for(var x = 0; x < 5; x++){
@@ -765,13 +982,13 @@ export class MatchComponent implements OnInit {
     if(this.currentPlayer != "Seu turno")
       return;
 
-    console.log("try to cast from hand from field " + field);
-    console.log(this.cardsOnHand);
-    console.log("last card got from deck " + this.lastCardGot);
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.playerTable[x]['name'] == this.cardsOnHand[field]['name'])
+        return;
+    }
 
-    console.log(handCard);
     var fieldSpacePosition = -1;
-    console.log(this.playerTable);
+
     if(this.cardsOnHand[field]['cost'] <= this.availableBooks && this.cardsOnHand[field]['cost'] != -1){
       this.availableBooks--;
       for(var x = 0; x < 5; x++){
@@ -811,6 +1028,57 @@ export class MatchComponent implements OnInit {
 
   castCardEffect(field : number) : void{
     var fieldCard : CardsOnTable = this.playerTable[field];
+    var lastActionString : string = fieldCard['name'] + " usou";
+
+    for(var x = 0; x < fieldCard['Effects'].length; x++){
+      if(x > 0)
+        lastActionString += " e ";
+      switch(fieldCard['Effects'][x]){
+        case("charm"):
+          lastActionString += " Charme";
+          break;
+        case("command"):
+          lastActionString += " Comandar";
+          break;
+        case("emancipate"):
+          lastActionString += " Emancipar";
+          break;
+        case("fascism"):
+          lastActionString += " Fascismo";
+          break;
+        case("holocaust"):
+          lastActionString += " Holocausto";
+          break;
+        case("hypnosis"):
+          lastActionString += " Hipnose";
+          break;
+        case("immortal"):
+          lastActionString += " Imortal";
+          break;
+        case("invent"):
+          lastActionString += " Inventar";
+          break;
+        case("pacifism"):
+          lastActionString += " Pacifismo";
+          break;
+        case("paint"):
+          lastActionString += " Pintar";
+          break;
+        case("performance"):
+          lastActionString += " Performance";
+          break;
+        case("purge"):
+          lastActionString += " Expurgo";
+          break;
+        default:
+          break;
+      }
+    }
+
+    lastActionString += "!";
+    this.lastAction = lastActionString;
+    this.afs.collection('matches').doc(this.matchId).update({'lastAction' : lastActionString});
+
     for(var x = 0; x < fieldCard['Effects'].length; x++){
       switch(fieldCard['Effects'][x]){
         case("charm"):
@@ -920,6 +1188,10 @@ export class MatchComponent implements OnInit {
     
     this.enemyTable[targetPosition] = targetCard;
     this.updateEnemyTableOnPosition(targetPosition, targetCard);
+
+    var lastActionString : string  = this.lastAction + " " + this.enemyTable[targetPosition]['name'] + " caiu no charme!";
+    this.lastAction = lastActionString;
+    this.afs.collection('matches').doc(this.matchId).update({'lastAction' : lastActionString});
   }
 
   command() : void{
@@ -943,7 +1215,7 @@ export class MatchComponent implements OnInit {
         for(var y = 0; y < this.cardsList.length; y++){
           if(this.cardsList[y]['id'] == newPlayerTable[x]['id']){
             newPlayerTable[x] = {'attack': this.cardsList[y]['attack'], 'cost': this.cardsList[y]['cost'], 
-                                'enterTurn' : this.turn, 'id' : this.cardsList[y]['id'], 
+                                'enterTurn' : this.turn-1, 'id' : this.cardsList[y]['id'], 
                                 'life' : this.cardsList[y]['life'], 'name' : this.cardsList[y]['name'], 
                                 'rarity' : this.cardsList[y]['rarity'], 'Effects' : this.cardsList[y]['effects'],
                                 'EffectsOver' : ["vazio"]};
@@ -958,7 +1230,7 @@ export class MatchComponent implements OnInit {
         for(var y = 0; y < this.cardsList.length; y++){
           if(this.cardsList[y]['id'] == newEnemyTable[x]['id']){
             newEnemyTable[x] = {'attack': this.cardsList[y]['attack'], 'cost': this.cardsList[y]['cost'], 
-                                'enterTurn' : this.turn, 'id' : this.cardsList[y]['id'], 
+                                'enterTurn' : this.turn-1, 'id' : this.cardsList[y]['id'], 
                                 'life' : this.cardsList[y]['life'], 'name' : this.cardsList[y]['name'], 
                                 'rarity' : this.cardsList[y]['rarity'], 'Effects' : this.cardsList[y]['effects'],
                                 'EffectsOver' : ["vazio"]};
@@ -1121,81 +1393,153 @@ export class MatchComponent implements OnInit {
     var attack : string = "";
     var life : string = "";
     var name : string = "";
+    var empty : string = "";
 
     char = 'assets/images/card/chars/default.png';
     cost = 'assets/images/card/GoldLevel.png';
     attack = 'assets/images/card/Markers.png';
     life = 'assets/images/card/Markers.png';
     name = 'assets/images/card/NameSign.png';
+    empty = 'assets/images/card/chars/default.png';
 
     if(this.cardsOnHand[0]['name'] == "vazio"){
-      this.playerHand1CardChar = char;
-      this.playerHand1CardCost = cost;
-      this.playerHand1CardAttack = attack;
-      this.playerHand1CardLife = life;
-      this.playerHand1CardName = name;
+      this.playerHand1CardChar = empty;
+      this.playerHand1CardCost = empty;
+      this.playerHand1CardAttack = empty;
+      this.playerHand1CardLife = empty;
+      this.playerHand1CardName = empty;
+      this.playerHand1CardVoid = empty;
+      this.playerHand1CardCurtain = empty;
+      this.playerHand1CardCave = empty;
     }else{
       this.playerHand1CardChar = 'assets/images/card/chars/'+this.cardsOnHand[0]['id']+'.png';
       this.playerHand1CardCost = 'assets/images/card/costs/'+this.cardsOnHand[0]['cost']+'.png';
       this.playerHand1CardAttack = 'assets/images/card/attacks/'+this.cardsOnHand[0]['attack']+'.png';
       this.playerHand1CardLife = 'assets/images/card/lifes/'+this.cardsOnHand[0]['life']+'.png';
       this.playerHand1CardName = 'assets/images/card/names/'+this.cardsOnHand[0]['id']+'.png';
+      this.playerHand1CardVoid = 'assets/images/card/effects/'+this.cardsOnHand[0]['id']+'.png';
+      this.playerHand1CardCurtain = this.curtain;
+      this.playerHand1CardCave = this.cave;
     }
 
     if(this.cardsOnHand[1]['name'] == "vazio"){
-      this.playerHand2CardChar = char;
-      this.playerHand2CardCost = cost;
-      this.playerHand2CardAttack = attack;
-      this.playerHand2CardLife = life;
-      this.playerHand2CardName = name;
+      this.playerHand2CardChar = empty;
+      this.playerHand2CardCost = empty;
+      this.playerHand2CardAttack = empty;
+      this.playerHand2CardLife = empty;
+      this.playerHand2CardName = empty;
+      this.playerHand2CardVoid = empty;
+      this.playerHand2CardCurtain = empty;
+      this.playerHand2CardCave = empty;
     }else{
       this.playerHand2CardChar = 'assets/images/card/chars/'+this.cardsOnHand[1]['id']+'.png';
       this.playerHand2CardCost = 'assets/images/card/costs/'+this.cardsOnHand[1]['cost']+'.png';
       this.playerHand2CardAttack = 'assets/images/card/attacks/'+this.cardsOnHand[1]['attack']+'.png';
       this.playerHand2CardLife = 'assets/images/card/lifes/'+this.cardsOnHand[1]['life']+'.png';
       this.playerHand2CardName = 'assets/images/card/names/'+this.cardsOnHand[1]['id']+'.png';
+      this.playerHand2CardVoid = 'assets/images/card/effects/'+this.cardsOnHand[1]['id']+'.png';
+      this.playerHand2CardCurtain = this.curtain;
+      this.playerHand2CardCave = this.cave;
     }
 
     if(this.cardsOnHand[2]['name'] == "vazio"){
-      this.playerHand3CardChar = char;
-      this.playerHand3CardCost = cost;
-      this.playerHand3CardAttack = attack;
-      this.playerHand3CardLife = life;
-      this.playerHand3CardName = name;
+      this.playerHand3CardChar = empty;
+      this.playerHand3CardCost = empty;
+      this.playerHand3CardAttack = empty;
+      this.playerHand3CardLife = empty;
+      this.playerHand3CardName = empty;
+      this.playerHand3CardVoid = empty;
+      this.playerHand3CardCurtain = empty;
+      this.playerHand3CardCave = empty;
     }else{
       this.playerHand3CardChar = 'assets/images/card/chars/'+this.cardsOnHand[2]['id']+'.png';
       this.playerHand3CardCost = 'assets/images/card/costs/'+this.cardsOnHand[2]['cost']+'.png';
       this.playerHand3CardAttack = 'assets/images/card/attacks/'+this.cardsOnHand[2]['attack']+'.png';
       this.playerHand3CardLife = 'assets/images/card/lifes/'+this.cardsOnHand[2]['life']+'.png';
       this.playerHand3CardName = 'assets/images/card/names/'+this.cardsOnHand[2]['id']+'.png';
+      this.playerHand3CardVoid = 'assets/images/card/effects/'+this.cardsOnHand[2]['id']+'.png';
+      this.playerHand3CardCurtain = this.curtain;
+      this.playerHand3CardCave = this.cave;
     }
 
     if(this.cardsOnHand[3]['name'] == "vazio"){
-      this.playerHand4CardChar = char;
-      this.playerHand4CardCost = cost;
-      this.playerHand4CardAttack = attack;
-      this.playerHand4CardLife = life;
-      this.playerHand4CardName = name;
+      this.playerHand4CardChar = empty;
+      this.playerHand4CardCost = empty;
+      this.playerHand4CardAttack = empty;
+      this.playerHand4CardLife = empty;
+      this.playerHand4CardName = empty;
+      this.playerHand4CardVoid = empty;
+      this.playerHand4CardCurtain = empty;
+      this.playerHand4CardCave = empty;
     }else{
       this.playerHand4CardChar = 'assets/images/card/chars/'+this.cardsOnHand[3]['id']+'.png';
       this.playerHand4CardCost = 'assets/images/card/costs/'+this.cardsOnHand[3]['cost']+'.png';
       this.playerHand4CardAttack = 'assets/images/card/attacks/'+this.cardsOnHand[3]['attack']+'.png';
       this.playerHand4CardLife = 'assets/images/card/lifes/'+this.cardsOnHand[3]['life']+'.png';
       this.playerHand4CardName = 'assets/images/card/names/'+this.cardsOnHand[3]['id']+'.png';
+      this.playerHand4CardVoid = 'assets/images/card/effects/'+this.cardsOnHand[3]['id']+'.png';
+      this.playerHand4CardCurtain = this.curtain;
+      this.playerHand4CardCave = this.cave;
     }
 
     if(this.cardsOnHand[4]['name'] == "vazio"){
-      this.playerHand5CardChar = char;
-      this.playerHand5CardCost = cost;
-      this.playerHand5CardAttack = attack;
-      this.playerHand5CardLife = life;
-      this.playerHand5CardName = name;
+      this.playerHand5CardChar = empty;
+      this.playerHand5CardCost = empty;
+      this.playerHand5CardAttack = empty;
+      this.playerHand5CardLife = empty;
+      this.playerHand5CardName = empty;
+      this.playerHand5CardVoid = empty;
+      this.playerHand5CardCurtain = empty;
+      this.playerHand5CardCave = empty;
     }else{
       this.playerHand5CardChar = 'assets/images/card/chars/'+this.cardsOnHand[4]['id']+'.png';
       this.playerHand5CardCost = 'assets/images/card/costs/'+this.cardsOnHand[4]['cost']+'.png';
       this.playerHand5CardAttack = 'assets/images/card/attacks/'+this.cardsOnHand[4]['attack']+'.png';
       this.playerHand5CardLife = 'assets/images/card/lifes/'+this.cardsOnHand[4]['life']+'.png';
       this.playerHand5CardName = 'assets/images/card/names/'+this.cardsOnHand[4]['id']+'.png';
+      this.playerHand5CardVoid = 'assets/images/card/effects/'+this.cardsOnHand[4]['id']+'.png';
+      this.playerHand5CardCurtain = this.curtain;
+      this.playerHand5CardCave = this.cave;
+    }
+
+    this.cardOnPlayerHand1CanCast = "canCast";
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.cardsOnHand[0]['name'] == this.playerTable[x]['name']){
+        this.cardOnPlayerHand1CanCast = "cantCast";
+        break;
+      }
+    }
+
+    this.cardOnPlayerHand2CanCast = "canCast";
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.cardsOnHand[1]['name'] == this.playerTable[x]['name']){
+        this.cardOnPlayerHand2CanCast = "cantCast";
+        break;
+      }
+    }
+
+    this.cardOnPlayerHand3CanCast = "canCast";
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.cardsOnHand[2]['name'] == this.playerTable[x]['name']){
+        this.cardOnPlayerHand3CanCast = "cantCast";
+        break;
+      }
+    }
+
+    this.cardOnPlayerHand4CanCast = "canCast";
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.cardsOnHand[3]['name'] == this.playerTable[x]['name']){
+        this.cardOnPlayerHand4CanCast = "cantCast";
+        break;
+      }
+    }
+
+    this.cardOnPlayerHand5CanCast = "canCast";
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.cardsOnHand[4]['name'] == this.playerTable[x]['name']){
+        this.cardOnPlayerHand5CanCast = "cantCast";
+        break;
+      }
     }
   }
 
@@ -1232,11 +1576,15 @@ export class MatchComponent implements OnInit {
   
   setEnemyFieldTarget(field : number) : void{
     //field = 5 é a vida do oponente
+    if(this.currentPlayer == "Turno do oponente")
+      return;
 
     var emptyCard : CardsOnTable = {'attack': -1, 'cost': -1, 'enterTurn' : -1, 'id' : "vazio", 'life' : -1, 'name' : "vazio", 'rarity' : -1, 'Effects' : ["vazio"], 'EffectsOver' : ["vazio"]};
 
     //dar dano nas cartas
     if(this.attackingCard != null){
+      var lastActionString : string = "";
+
       //verificar se é o turno que a carta entrou
       if(this.attackingCard['enterTurn'] == this.turn)
         return;
@@ -1275,8 +1623,12 @@ export class MatchComponent implements OnInit {
           charm = 4;
         }
 
-        if(charm == field)
+        if(charm == field){
+          lastActionString = this.attackingCard['name'] + " está sob o charme de " + this.targetCardForAttack['name']+ "!";
+          this.lastAction = lastActionString;
+          this.afs.collection('matches').doc(this.matchId).update({'lastAction' : lastActionString});
           return;
+        }
 
         charm = -1;
       }
@@ -1308,25 +1660,43 @@ export class MatchComponent implements OnInit {
       this.targetCardForAttack['life'] -= this.attackingCard['attack'];
       this.attackingCard['life'] -= this.targetCardForAttack['attack'];
 
+      lastActionString = this.attackingCard['name'] + " atacou " + this.targetCardForAttack['name'] + "!";
+      this.lastAction = lastActionString;
+      this.afs.collection('matches').doc(this.matchId).update({'lastAction' : lastActionString});
+
       if(this.targetCardForAttack['life'] <= 0){
+        //checar se a carta tinha deixado o efeito de charme em alguma carta
+        this.checkCharmDestroyed(field, "checkOnEnemyCardDestroyed");
+
         this.enemyTable[field] = emptyCard;
         this.updateEnemyTableOnPosition(field, emptyCard);
       }
       else{
-        if(targetCardForAttackHasImmortal)
+        if(targetCardForAttackHasImmortal){
+          lastActionString += " " + this.targetCardForAttack['Name'] + "usou Imortal!";
+          this.lastAction = lastActionString;
+          this.afs.collection('matches').doc(this.matchId).update({'lastAction' : lastActionString});
           this.targetCardForAttack['life'] = oldTargetCardForAttackLife;
+        }
 
         this.enemyTable[field] = this.targetCardForAttack;
         this.updateEnemyTableOnPosition(field, this.targetCardForAttack);
       }
 
       if(this.attackingCard['life'] <= 0){
+        //checar se a carta tinha deixado o efeito de charme em alguma carta
+        this.checkCharmDestroyed(this.attackingCardPosition, "checkOnPlayerCardDestroyed");
+
         this.playerTable[this.attackingCardPosition] = emptyCard;
         this.updatePlayerTableOnPosition(this.attackingCardPosition, emptyCard);
       }
       else{
-        if(attackingCardHasImmortal)
+        if(attackingCardHasImmortal){
+          lastActionString += " " + this.attackingCard['Name'] + "usou Imortal!";
+          this.lastAction = lastActionString;
+          this.afs.collection('matches').doc(this.matchId).update({'lastAction' : lastActionString});
           this.attackingCard['life'] = oldAttackingCardLife;
+        }
 
         this.cardsThatAttackedThisTurn[this.attackingCardPosition] = 1;
         this.playerTable[this.attackingCardPosition] = this.attackingCard;
@@ -1453,6 +1823,10 @@ export class MatchComponent implements OnInit {
     if(this.attackingCard['id'] == "vazio")
       return;
 
+    var lastActionString : string = this.attackingCard['name'] + " atacou o jogador!";
+    this.lastAction = lastActionString;
+    this.afs.collection('matches').doc(this.matchId).update({'lastAction' : lastActionString});
+
     this.cardsThatAttackedThisTurn[this.attackingCardPosition] = 1;
 
     var enemyNewLife = this.enemyLife - this.attackingCard['attack'];
@@ -1470,5 +1844,71 @@ export class MatchComponent implements OnInit {
   setPlayerFieldTarget(field : number) : void{
     this.attackingCard = this.playerTable[field];
     this.attackingCardPosition = field;
+  }
+
+  checkCharmDestroyed(position : number, where : string) : void{
+    //where = "checkOnEnemyCardDestroyed" ou "checkOnPlayerCardDestryed"
+    if(where == "checkOnEnemyCardDestroyed"){
+      //checar se alguma carta do player estava com charm
+      for(var x = 0; x < this.playerTable.length; x++){
+        for(var y = 0; y < this.playerTable[x]['EffectsOver'].length; y++){
+          switch(this.playerTable[x]['EffectsOver'][y]){
+            case("charmedByEnemyCardOnPosition0"):
+              if(position == 0)
+                this.playerTable[x]['EffectsOver'][y] = "vazio";
+              break;
+            case("charmedByEnemyCardOnPosition1"):
+              if(position == 1)
+                this.playerTable[x]['EffectsOver'][y] = "vazio";
+              break;
+            case("charmedByEnemyCardOnPosition2"):
+              if(position == 2)
+                this.playerTable[x]['EffectsOver'][y] = "vazio";
+              break;
+            case("charmedByEnemyCardOnPosition3"):
+              if(position == 3)
+                this.playerTable[x]['EffectsOver'][y] = "vazio";
+              break;
+            case("charmedByEnemyCardOnPosition4"):
+              if(position == 4)
+                this.playerTable[x]['EffectsOver'][y] = "vazio";
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    }
+    else if(where == "checkOnPlayerCardDestroyed"){
+      //checar se alguma carta do enemy estava com charm
+      for(var x = 0; x < this.enemyTable.length; x++){
+        for(var y = 0; y < this.enemyTable[x]['EffectsOver'].length; y++){
+          switch(this.enemyTable[x]['EffectsOver'][y]){
+            case("charmedByEnemyCardOnPosition0"):
+              if(position == 0)
+                this.enemyTable[x]['EffectsOver'][y] = "vazio";
+              break;
+            case("charmedByEnemyCardOnPosition1"):
+              if(position == 1)
+                this.enemyTable[x]['EffectsOver'][y] = "vazio";
+              break;
+            case("charmedByEnemyCardOnPosition2"):
+              if(position == 2)
+                this.enemyTable[x]['EffectsOver'][y] = "vazio";
+              break;
+            case("charmedByEnemyCardOnPosition3"):
+              if(position == 3)
+                this.enemyTable[x]['EffectsOver'][y] = "vazio";
+              break;
+            case("charmedByEnemyCardOnPosition4"):
+              if(position == 4)
+                this.enemyTable[x]['EffectsOver'][y] = "vazio";
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    }
   }
 }

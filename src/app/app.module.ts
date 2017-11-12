@@ -22,6 +22,8 @@ import {DeckMenuComponent} from './menu/deck-menu/deck-menu.component';
 import {EditDeckComponent} from './menu/edit-deck/edit-deck.component';
 import {MatchComponent} from './match/match.component';
 import {DialogModule} from 'primeng/primeng';
+import {DefeatComponent} from './match/defeat-screen/defeat.component';
+import {VictoryComponent} from './match/victory-screen/victory.component';
 
 import {DataService} from './menu/data.service';
 
@@ -34,7 +36,9 @@ import {DataService} from './menu/data.service';
     MainMenuComponent,
     DeckMenuComponent,
     EditDeckComponent,
-    MatchComponent
+    MatchComponent,
+    DefeatComponent,
+    VictoryComponent
   ],
   imports: [
     BrowserAnimationsModule,
