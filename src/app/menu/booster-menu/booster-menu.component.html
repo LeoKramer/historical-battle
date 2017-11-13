@@ -1,0 +1,63 @@
+<div class = "booster-page" *ngIf="authService.currentUser">
+	<div class="user-options">
+		Bem vindo, {{ authService.currentUserName }}
+		<button id="btn-gold" type="button" class="btn btn-info" (click)="goToBoosters()">Ouro: {{playerGold}}</button>
+		<button id="btn-deslogar" type="button" class="btn btn-danger" (click)="logout()">Deslogar</button>
+	</div>
+	<div class="tab">
+		<ul class="nav nav-tabs">
+		  <li class="nav-item">
+		    <a class="nav-link" routerLink="/menu">Jogar</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" routerLink="/decks">Baralhos</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link active">Pacotes</a>
+		  </li>
+		</ul>
+	</div>
+	<div class="booster-deck">
+		<div class="buyBoosterButton">
+			<button id="btn-buyBooster" type="button" class="btn btn-success" [disabled]="dontHaveEnoughGold"(click)="buyBooster()">Comprar um pacote de cartas por 100 de ouro!</button>
+		</div>
+		<div class="earnedCards">
+			<div class="field-image field1">
+				<div class="repeatCardText repeatCardText1">{{earnedCard1Repeated}}</div>
+				<div class="overlay-image-4 background-cover"><img [src] = "earnedCard1Base"/></div>
+				<div class="overlay-image-3 background-cover"><img [src] = "earnedCard1Cave"/></div>
+				<div class="overlay-image-3 background-cover"><img [src] = "earnedCard1Curtain"/></div>
+				<div class="overlay-image-2 background-cover"><img [src] = "earnedCard1Void"/></div>
+				<div class="overlay-image-2 background-cover"><img [src] = "earnedCard1Char" id="cardChar"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard1Cost"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard1Attack"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard1Life"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard1Name"/></div>
+			</div>
+			<div class="field-image field2">
+				<div class="repeatCardText repeatCardText2">{{earnedCard2Repeated}}</div>
+				<div class="overlay-image-4 background-cover"><img [src] = "earnedCard2Base"/></div>
+				<div class="overlay-image-3 background-cover"><img [src] = "earnedCard2Cave"/></div>
+				<div class="overlay-image-3 background-cover"><img [src] = "earnedCard2Curtain"/></div>
+				<div class="overlay-image-2 background-cover"><img [src] = "earnedCard2Void"/></div>
+				<div class="overlay-image-2 background-cover"><img [src] = "earnedCard2Char" id="cardChar"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard2Cost"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard2Attack"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard2Life"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard2Name"/></div>
+			</div>
+			<div class="field-image field3">
+				<div class="repeatCardText repeatCardText3">{{earnedCard3Repeated}}</div>
+				<div class="overlay-image-4 background-cover"><img [src] = "earnedCard3Base"/></div>
+				<div class="overlay-image-3 background-cover"><img [src] = "earnedCard3Cave"/></div>
+				<div class="overlay-image-3 background-cover"><img [src] = "earnedCard3Curtain"/></div>
+				<div class="overlay-image-2 background-cover"><img [src] = "earnedCard3Void"/></div>
+				<div class="overlay-image-2 background-cover"><img [src] = "earnedCard3Char" id="cardChar"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard3Cost"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard3Attack"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard3Life"/></div>
+				<div class="overlay-image-1 background-cover"><img [src] = "earnedCard3Name"/></div>
+			</div>
+		</div>
+	</div>
+</div>

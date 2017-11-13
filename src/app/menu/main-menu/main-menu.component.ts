@@ -122,6 +122,8 @@ export class MainMenuComponent implements OnInit {
   displayMatch : boolean = false;
   matchStatus : string = "matchNotShowing"
 
+  playerGold : number = 0;
+
   constructor(public authService: AuthService, private afs : AngularFirestore, private router: Router, private data: DataService) {
     this.cardsCollectionRef = this.afs.collection<Cards>('cards');
     this.cards$ = this.cardsCollectionRef.snapshotChanges().map(actions => {
@@ -172,6 +174,7 @@ export class MainMenuComponent implements OnInit {
     this.user$ = this.userDoc.valueChanges();
     this.user$.subscribe(data => {
       console.log("checking account");
+      this.playerGold = data['gold'];
       if(data == null){
           console.log("primeiro login");
           this.cards$.subscribe(data => {this.cards=data;this.firstLogin(this.cards);});
@@ -186,6 +189,10 @@ export class MainMenuComponent implements OnInit {
     this.authService.signOut();
   }
 
+  goToBoosters(){
+    this.router.navigate(['/booster']);
+  }
+  
   firstLogin(cards: Object) : void{
     var cardsIds: Array<string>;
     cardsIds = [];

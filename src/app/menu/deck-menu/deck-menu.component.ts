@@ -64,10 +64,12 @@ export class DeckMenuComponent implements OnInit{
 
   editDeck:string;
 
+  playerGold : number = 0;
+
   constructor(public authService: AuthService, private afs : AngularFirestore, private router: Router, private data: DataService) {
     this.userDoc = this.afs.doc('users/'+this.authService.currentUserId);
     this.user$ = this.userDoc.valueChanges();
-    this.user$.subscribe(data => {this.user = data; this.loadDecksInfo(data);});
+    this.user$.subscribe(data => {this.user = data; this.loadDecksInfo(data); this.playerGold = data['gold'];});
   }
 
   ngOnInit() {
@@ -76,6 +78,10 @@ export class DeckMenuComponent implements OnInit{
 
   logout() {
     this.authService.signOut();
+  }
+
+  goToBoosters(){
+    this.router.navigate(['/booster']);
   }
 
   loadDecksInfo(user: Object) : void{

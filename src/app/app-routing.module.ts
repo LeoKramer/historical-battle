@@ -8,6 +8,7 @@ import {UserSignupComponent} from './auth/user-signup/user-signup.component';
 import {MainMenuComponent} from './menu/main-menu/main-menu.component';
 import {DeckMenuComponent} from './menu/deck-menu/deck-menu.component';
 import {EditDeckComponent} from './menu/edit-deck/edit-deck.component';
+import {BoosterMenuComponent} from './menu/booster-menu/booster-menu.component';
 
 import {MatchComponent} from './match/match.component';
 import {DefeatComponent} from './match/defeat-screen/defeat.component';
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'signup', component: UserSignupComponent},
   {path: 'decks', component: DeckMenuComponent},
   {path: 'edit', component: EditDeckComponent},
+  {path: 'boosters', component: BoosterMenuComponent},
   {path: 'match', component: MatchComponent},
   {path: 'defeat', component: DefeatComponent},
   {path: 'victory', component: VictoryComponent},
