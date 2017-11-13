@@ -958,16 +958,12 @@ export class MatchComponent implements OnInit {
               this.playerHand5CardCurtain = this.curtain;
               this.playerHand5CardCave = this.cave;
 
-              this.cardOnPlayerHand1CanCast = "canCast";
-              this.cardOnPlayerHand2CanCast = "canCast";
-              this.cardOnPlayerHand3CanCast = "canCast";
-              this.cardOnPlayerHand4CanCast = "canCast";
-              this.cardOnPlayerHand5CanCast = "canCast";
-
               this.lastCardGot = 4;
               for(var x = 0; x < 5; x++){
                 this.cardsOnHand[x] = this.matchCards[x];
               }
+
+              this.checkHandCardsThatCanBeCasted();
             }
           }); 
         });
@@ -978,6 +974,139 @@ export class MatchComponent implements OnInit {
   ngOnInit() {
   }
   
+  checkIfCanCastThisCard(position : number){
+    if(this.currentPlayer != "Seu turno")
+      return;
+
+    switch(position){
+      case(0):
+        this.cardOnPlayerHand1CanCast = "canCast";
+        if(this.cardsOnHand[0]['cost'] > this.availableBooks)
+          this.cardOnPlayerHand1CanCast = "cantCast";
+        for(var x = 0; x < this.playerTable.length; x++){
+          if(this.playerTable[x]['name'] == this.cardsOnHand[0]['name']){
+            this.cardOnPlayerHand1CanCast = "cantCast";
+            break;
+          }
+        }
+        break;
+      case(1):
+        this.cardOnPlayerHand2CanCast = "canCast";
+        if(this.cardsOnHand[1]['cost'] > this.availableBooks)
+          this.cardOnPlayerHand2CanCast = "cantCast";
+        for(var x = 0; x < this.playerTable.length; x++){
+          if(this.playerTable[x]['name'] == this.cardsOnHand[1]['name']){
+            this.cardOnPlayerHand2CanCast = "cantCast";
+            break;
+          }
+        }
+        break;
+      case(2):
+        this.cardOnPlayerHand3CanCast = "canCast";
+        if(this.cardsOnHand[2]['cost'] > this.availableBooks)
+          this.cardOnPlayerHand3CanCast = "cantCast";
+        for(var x = 0; x < this.playerTable.length; x++){
+          if(this.playerTable[x]['name'] == this.cardsOnHand[2]['name']){
+            this.cardOnPlayerHand3CanCast = "cantCast";
+            break;
+          }
+        }
+        break;
+      case(3):
+        this.cardOnPlayerHand4CanCast = "canCast";
+        if(this.cardsOnHand[3]['cost'] > this.availableBooks)
+          this.cardOnPlayerHand4CanCast = "cantCast";
+        for(var x = 0; x < this.playerTable.length; x++){
+          if(this.playerTable[x]['name'] == this.cardsOnHand[3]['name']){
+            this.cardOnPlayerHand4CanCast = "cantCast";
+            break;
+          }
+        }
+        break;
+      case(4):
+        this.cardOnPlayerHand5CanCast = "canCast";
+        if(this.cardsOnHand[4]['cost'] > this.availableBooks)
+          this.cardOnPlayerHand5CanCast = "cantCast";
+        for(var x = 0; x < this.playerTable.length; x++){
+          if(this.playerTable[x]['name'] == this.cardsOnHand[4]['name']){
+            this.cardOnPlayerHand5CanCast = "cantCast";
+            break;
+          }
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  checkHandCardsThatCanBeCasted(){
+    if(this.currentPlayer != "Seu turno"){
+      console.log("nao é seu turno de jogar");
+      this.cardOnPlayerHand1CanCast = "cantCast";
+      this.cardOnPlayerHand2CanCast = "cantCast";
+      this.cardOnPlayerHand3CanCast = "cantCast";
+      this.cardOnPlayerHand4CanCast = "cantCast";
+      this.cardOnPlayerHand5CanCast = "cantCast";
+
+      return;
+    }
+
+    this.cardOnPlayerHand1CanCast = "canCast";
+    if(this.cardsOnHand[0]['cost'] > this.availableBooks)
+      this.cardOnPlayerHand1CanCast = "cantCast";
+
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.cardsOnHand[0]['name'] == this.playerTable[x]['name']){
+        this.cardOnPlayerHand1CanCast = "cantCast";
+        break;
+      }
+    }
+
+    this.cardOnPlayerHand2CanCast = "canCast";
+    if(this.cardsOnHand[1]['cost'] > this.availableBooks)
+      this.cardOnPlayerHand2CanCast = "cantCast";
+
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.cardsOnHand[1]['name'] == this.playerTable[x]['name']){
+        this.cardOnPlayerHand2CanCast = "cantCast";
+        break;
+      }
+    }
+
+    this.cardOnPlayerHand3CanCast = "canCast";
+    if(this.cardsOnHand[2]['cost'] > this.availableBooks)
+      this.cardOnPlayerHand3CanCast = "cantCast";
+
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.cardsOnHand[2]['name'] == this.playerTable[x]['name']){
+        this.cardOnPlayerHand3CanCast = "cantCast";
+        break;
+      }
+    }
+
+    this.cardOnPlayerHand4CanCast = "canCast";
+    if(this.cardsOnHand[3]['cost'] > this.availableBooks)
+      this.cardOnPlayerHand4CanCast = "cantCast";
+
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.cardsOnHand[3]['name'] == this.playerTable[x]['name']){
+        this.cardOnPlayerHand4CanCast = "cantCast";
+        break;
+      }
+    }
+
+    this.cardOnPlayerHand5CanCast = "canCast";
+    if(this.cardsOnHand[4]['cost'] > this.availableBooks)
+      this.cardOnPlayerHand5CanCast = "cantCast";
+
+    for(var x = 0; x < this.playerTable.length; x++){
+      if(this.cardsOnHand[4]['name'] == this.playerTable[x]['name']){
+        this.cardOnPlayerHand5CanCast = "cantCast";
+        break;
+      }
+    }
+  }
+
   tryToCastFromHand(field : number) : void{
     if(this.currentPlayer != "Seu turno")
       return;
@@ -990,7 +1119,7 @@ export class MatchComponent implements OnInit {
     var fieldSpacePosition = -1;
 
     if(this.cardsOnHand[field]['cost'] <= this.availableBooks && this.cardsOnHand[field]['cost'] != -1){
-      this.availableBooks--;
+      this.availableBooks -= this.cardsOnHand[field]['cost'];
       for(var x = 0; x < 5; x++){
         if(this.playerTable[x]['id'] == "vazio"){
           fieldSpacePosition = x;
@@ -1502,45 +1631,7 @@ export class MatchComponent implements OnInit {
       this.playerHand5CardCave = this.cave;
     }
 
-    this.cardOnPlayerHand1CanCast = "canCast";
-    for(var x = 0; x < this.playerTable.length; x++){
-      if(this.cardsOnHand[0]['name'] == this.playerTable[x]['name']){
-        this.cardOnPlayerHand1CanCast = "cantCast";
-        break;
-      }
-    }
-
-    this.cardOnPlayerHand2CanCast = "canCast";
-    for(var x = 0; x < this.playerTable.length; x++){
-      if(this.cardsOnHand[1]['name'] == this.playerTable[x]['name']){
-        this.cardOnPlayerHand2CanCast = "cantCast";
-        break;
-      }
-    }
-
-    this.cardOnPlayerHand3CanCast = "canCast";
-    for(var x = 0; x < this.playerTable.length; x++){
-      if(this.cardsOnHand[2]['name'] == this.playerTable[x]['name']){
-        this.cardOnPlayerHand3CanCast = "cantCast";
-        break;
-      }
-    }
-
-    this.cardOnPlayerHand4CanCast = "canCast";
-    for(var x = 0; x < this.playerTable.length; x++){
-      if(this.cardsOnHand[3]['name'] == this.playerTable[x]['name']){
-        this.cardOnPlayerHand4CanCast = "cantCast";
-        break;
-      }
-    }
-
-    this.cardOnPlayerHand5CanCast = "canCast";
-    for(var x = 0; x < this.playerTable.length; x++){
-      if(this.cardsOnHand[4]['name'] == this.playerTable[x]['name']){
-        this.cardOnPlayerHand5CanCast = "cantCast";
-        break;
-      }
-    }
+    this.checkHandCardsThatCanBeCasted();
   }
 
   
@@ -1765,6 +1856,11 @@ export class MatchComponent implements OnInit {
   }
 
   updatePlayerTableOnPosition(position : number, cardInfo : CardsOnTable){
+    if(cardInfo['life'] > 9)
+      cardInfo['life'] = 9;
+    if(cardInfo['attack'] > 9)
+      cardInfo['attack'] = 9;
+
     if(this.whoIsThisPlayer == "Player1"){
         switch(position){
           case(0):

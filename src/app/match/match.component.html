@@ -125,7 +125,7 @@
 			</div>
 		</div>
 		<div class="cardsOnHand">
-			<div class="hand-image hand1" (click)="tryToCastFromHand(0)" [id]="cardOnPlayerHand1CanCast">
+			<div class="hand-image hand1" (click)="tryToCastFromHand(0)" [id]="cardOnPlayerHand1CanCast" (mouseenter)="checkIfCanCastThisCard(0)">
 				<div class="overlay-image-4 background-cover"><img [src]= "playerHand1CardBase"></div>
 				<div class="overlay-image-3 background-cover"><img [src]= "playerHand1CardCave"></div>
 				<div class="overlay-image-3 background-cover"><img [src]= "playerHand1CardCurtain"></div>
@@ -136,7 +136,7 @@
 				<div class="overlay-image-1 background-cover"><img [src]= "playerHand1CardLife"></div>
 				<div class="overlay-image-1 background-cover"><img [src]= "playerHand1CardName"></div>
 			</div>
-			<div class="hand-image hand2" (click)="tryToCastFromHand(1)" [id]="cardOnPlayerHand2CanCast">
+			<div class="hand-image hand2" (click)="tryToCastFromHand(1)" [id]="cardOnPlayerHand2CanCast" (mouseenter)="checkIfCanCastThisCard(1)">
 				<div class="overlay-image-4 background-cover"><img [src]= "playerHand2CardBase"></div>
 				<div class="overlay-image-3 background-cover"><img [src]= "playerHand2CardCave"></div>
 				<div class="overlay-image-3 background-cover"><img [src]= "playerHand2CardCurtain"></div>
@@ -147,7 +147,7 @@
 				<div class="overlay-image-1 background-cover"><img [src]= "playerHand2CardLife"></div>
 				<div class="overlay-image-1 background-cover"><img [src]= "playerHand2CardName"></div>
 			</div>
-			<div class="hand-image hand3" (click)="tryToCastFromHand(2)" [id]="cardOnPlayerHand3CanCast">
+			<div class="hand-image hand3" (click)="tryToCastFromHand(2)" [id]="cardOnPlayerHand3CanCast" (mouseenter)="checkIfCanCastThisCard(2)">
 				<div class="overlay-image-4 background-cover"><img [src]= "playerHand3CardBase"></div>
 				<div class="overlay-image-3 background-cover"><img [src]= "playerHand3CardCave"></div>
 				<div class="overlay-image-3 background-cover"><img [src]= "playerHand3CardCurtain"></div>
@@ -158,7 +158,7 @@
 				<div class="overlay-image-1 background-cover"><img [src]= "playerHand3CardLife"></div>
 				<div class="overlay-image-1 background-cover"><img [src]= "playerHand3CardName"></div>
 			</div>
-			<div class="hand-image hand4" (click)="tryToCastFromHand(3)" [id]="cardOnPlayerHand4CanCast">
+			<div class="hand-image hand4" (click)="tryToCastFromHand(3)" [id]="cardOnPlayerHand4CanCast" (mouseenter)="checkIfCanCastThisCard(3)">
 				<div class="overlay-image-4 background-cover"><img [src]= "playerHand4CardBase"></div>
 				<div class="overlay-image-3 background-cover"><img [src]= "playerHand4CardCave"></div>
 				<div class="overlay-image-3 background-cover"><img [src]= "playerHand4CardCurtain"></div>
@@ -169,7 +169,7 @@
 				<div class="overlay-image-1 background-cover"><img [src]= "playerHand4CardLife"></div>
 				<div class="overlay-image-1 background-cover"><img [src]= "playerHand4CardName"></div>
 			</div>
-			<div class="hand-image hand5" (click)="tryToCastFromHand(4)" [id]="cardOnPlayerHand5CanCast">
+			<div class="hand-image hand5" (click)="tryToCastFromHand(4)" [id]="cardOnPlayerHand5CanCast" (mouseenter)="checkIfCanCastThisCard(4)">
 				<div class="overlay-image-4 background-cover"><img [src]= "playerHand5CardBase"></div>
 				<div class="overlay-image-3 background-cover"><img [src]= "playerHand5CardCave"></div>
 				<div class="overlay-image-3 background-cover"><img [src]= "playerHand5CardCurtain"></div>
