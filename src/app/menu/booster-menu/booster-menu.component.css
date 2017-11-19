@@ -121,3 +121,7 @@ img:hover{
 .repeatCardText .repeatedCardText3{
 	margin-left: 73%;
 }
+
+#repeatedCardImg{
+	opacity: 0.9;
+}

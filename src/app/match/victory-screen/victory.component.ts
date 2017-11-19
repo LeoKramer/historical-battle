@@ -17,8 +17,11 @@ import { DataService } from "../../menu/data.service";
 })
 export class VictoryComponent implements OnInit {
 
-  constructor(public authService: AuthService, private afs : AngularFirestore, private router: Router, private data: DataService) {
-  	setTimeout(() => this.router.navigate(['/menu']), 5000);
+  constructor(public authService: AuthService, private afs : AngularFirestore, private router: Router, private data: DataService){
+    this.data.currentMessage.subscribe(message => {
+      this.afs.collection('matches').doc(message).delete();
+      setTimeout(() => this.router.navigate(['/menu']), 5000);
+    });
   }
 
   ngOnInit() {

@@ -93,6 +93,7 @@ export class BoosterMenuComponent implements OnInit{
   earnedCard1Attack : string = 'assets/images/card/Markers.png';
   earnedCard1Life : string = 'assets/images/card/Markers.png';
   earnedCard1Name : string = 'assets/images/card/NameSign.png';
+  earnedCard1Repeated : string = 'assets/images/card/chars/default.png';
 
   earnedCard2Base : string = 'assets/images/card/Blue.png';
   earnedCard2Cave : string = 'assets/images/card/Cave.png';
@@ -103,6 +104,7 @@ export class BoosterMenuComponent implements OnInit{
   earnedCard2Attack : string = 'assets/images/card/Markers.png';
   earnedCard2Life : string = 'assets/images/card/Markers.png';
   earnedCard2Name : string = 'assets/images/card/NameSign.png';
+  earnedCard2Repeated : string = 'assets/images/card/chars/default.png';
 
   earnedCard3Base : string = 'assets/images/card/Blue.png';
   earnedCard3Cave : string = 'assets/images/card/Cave.png';
@@ -113,10 +115,7 @@ export class BoosterMenuComponent implements OnInit{
   earnedCard3Attack : string = 'assets/images/card/Markers.png';
   earnedCard3Life : string = 'assets/images/card/Markers.png';
   earnedCard3Name : string = 'assets/images/card/NameSign.png';
-
-  earnedCard1Repeated : string = "";
-  earnedCard2Repeated : string = "";
-  earnedCard3Repeated : string = "";
+  earnedCard3Repeated : string = 'assets/images/card/chars/default.png';
 
   constructor(public authService: AuthService, private afs : AngularFirestore, private router: Router, private data: DataService) {
     this.userDoc = this.afs.doc('users/'+this.authService.currentUserId);
@@ -236,7 +235,7 @@ export class BoosterMenuComponent implements OnInit{
           break;
       }
 
-      this.earnedCard1Repeated = "Repetida! +"+repeatedCardGoldEarned+" de ouro!";
+      this.earnedCard1Repeated = 'assets/images/repeated.png';
       repeatedCardsGoldEarned += repeatedCardGoldEarned;
     }
     else{
@@ -272,7 +271,7 @@ export class BoosterMenuComponent implements OnInit{
           break;
       }
       
-      this.earnedCard2Repeated = "Repetida! +"+repeatedCardGoldEarned+" de ouro!";
+      this.earnedCard2Repeated = 'assets/images/repeated.png';
       repeatedCardsGoldEarned += repeatedCardGoldEarned;
     }
     else{
@@ -307,8 +306,7 @@ export class BoosterMenuComponent implements OnInit{
         default:
           break;
       }
-      
-      this.earnedCard3Repeated = "Repetida! +"+repeatedCardGoldEarned+" de ouro!";
+      this.earnedCard3Repeated = 'assets/images/repeated.png';
       repeatedCardsGoldEarned += repeatedCardGoldEarned;
     }
     else{

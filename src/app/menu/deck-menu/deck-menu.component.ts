@@ -50,11 +50,11 @@ interface AccountCards{
 })
 
 export class DeckMenuComponent implements OnInit{
-	deck1ImagePath: string = 'assets/images/placeholder_addDeck.png';
-	deck2ImagePath: string = 'assets/images/placeholder_addDeck.png';
-	deck3ImagePath: string = 'assets/images/placeholder_addDeck.png';
-	deck4ImagePath: string = 'assets/images/placeholder_addDeck.png';
-	deck5ImagePath: string = 'assets/images/placeholder_addDeck.png';
+	deck1ImagePath: string = 'assets/images/addDeck.png';
+	deck2ImagePath: string = 'assets/images/addDeck.png';
+	deck3ImagePath: string = 'assets/images/addDeck.png';
+	deck4ImagePath: string = 'assets/images/addDeck.png';
+	deck5ImagePath: string = 'assets/images/addDeck.png';
 
 	userDoc: AngularFirestoreDocument<Users>;
 	user$ : Observable<Users>;
@@ -88,37 +88,37 @@ export class DeckMenuComponent implements OnInit{
   	var deck = user['deck1'][0];
 
   	if(deck != 'vazio')
-  		this.deck1ImagePath = 'assets/images/placeholder_createdDeck.png';
+  		this.deck1ImagePath = 'assets/images/createdDeck.png';
   	else
-  		this.deck1ImagePath = 'assets/images/placeholder_addDeck.png';
+  		this.deck1ImagePath = 'assets/images/addDeck.png';
 
   	deck = user['deck2'][0];
 
   	if(deck != 'vazio')
-  		this.deck2ImagePath = 'assets/images/placeholder_createdDeck.png';
+  		this.deck2ImagePath = 'assets/images/createdDeck.png';
   	else
-  		this.deck2ImagePath = 'assets/images/placeholder_addDeck.png';
+  		this.deck2ImagePath = 'assets/images/addDeck.png';
 
   	deck = user['deck3'][0];
 
   	if(deck != 'vazio')
-  		this.deck3ImagePath = 'assets/images/placeholder_createdDeck.png';
+  		this.deck3ImagePath = 'assets/images/createdDeck.png';
   	else
-  		this.deck3ImagePath = 'assets/images/placeholder_addDeck.png';
+  		this.deck3ImagePath = 'assets/images/addDeck.png';
 
   	deck = user['deck4'][0];
 
   	if(deck != 'vazio')
-  		this.deck4ImagePath = 'assets/images/placeholder_createdDeck.png';
+  		this.deck4ImagePath = 'assets/images/createdDeck.png';
   	else
-  		this.deck4ImagePath = 'assets/images/placeholder_addDeck.png';
+  		this.deck4ImagePath = 'assets/images/addDeck.png';
 
   	deck = user['deck5'][0];
 
   	if(deck != 'vazio')
-  		this.deck5ImagePath = 'assets/images/placeholder_createdDeck.png';
+  		this.deck5ImagePath = 'assets/images/createdDeck.png';
   	else
-  		this.deck5ImagePath = 'assets/images/placeholder_addDeck.png';
+  		this.deck5ImagePath = 'assets/images/addDeck.png';
 
   	this.loadDecksImages();
   }
@@ -126,19 +126,19 @@ export class DeckMenuComponent implements OnInit{
   loadDecksImages(){
     switch(this.user['defaultDeck']){
       case('deck1'):
-        this.deck1ImagePath = 'assets/images/placeholder_defaultDeck.png';
+        this.deck1ImagePath = 'assets/images/defaultDeck.png';
         break;
       case('deck2'):
-        this.deck2ImagePath = 'assets/images/placeholder_defaultDeck.png';
+        this.deck2ImagePath = 'assets/images/defaultDeck.png';
         break;
       case('deck3'):
-        this.deck3ImagePath = 'assets/images/placeholder_defaultDeck.png';
+        this.deck3ImagePath = 'assets/images/defaultDeck.png';
         break;
       case('deck4'):
-        this.deck4ImagePath = 'assets/images/placeholder_defaultDeck.png';
+        this.deck4ImagePath = 'assets/images/defaultDeck.png';
         break;
       case('deck5'):
-        this.deck5ImagePath = 'assets/images/placeholder_defaultDeck.png';
+        this.deck5ImagePath = 'assets/images/defaultDeck.png';
         break;
     }
   }

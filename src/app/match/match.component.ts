@@ -378,9 +378,9 @@ export class MatchComponent implements OnInit {
               else{
                 //tela de vitória
                 this.afs.collection('users').doc(this.authService.currentUserId).update({'gold' : this.gold+15});
+                this.data.changeMessage(this.matchId);
                 this.router.navigate(['/victory']);
               }
-              this.afs.collection('matches').doc(this.matchId).delete();
             }
 
             var player2Life = data['player2Life'];
@@ -392,10 +392,9 @@ export class MatchComponent implements OnInit {
               else{
                 //tela de vitória
                 this.afs.collection('users').doc(this.authService.currentUserId).update({'gold' : this.gold+15});
+                this.data.changeMessage(this.matchId);
                 this.router.navigate(['/victory']);
               }
-
-              this.afs.collection('matches').doc(this.matchId).delete();
             }
 
             //verificar o campo

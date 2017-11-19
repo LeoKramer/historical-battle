@@ -174,11 +174,14 @@ export class MainMenuComponent implements OnInit {
     this.user$ = this.userDoc.valueChanges();
     this.user$.subscribe(data => {
       console.log("checking account");
-      this.playerGold = data['gold'];
       if(data == null){
           console.log("primeiro login");
+          this.playerGold = 0;
           this.cards$.subscribe(data => {this.cards=data;this.firstLogin(this.cards);});
-        }
+      }
+      else{
+        this.playerGold = data['gold'];
+      }
     });
   }
 
