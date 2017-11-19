@@ -1,3 +1,12 @@
+.row{
+	max-width: 100% !important; 
+}
+
+.col-3, .col-6{
+	overflow-x: hidden;
+	background-color: rgba(55, 55, 55, 1);
+}
+
 .upper-tab{
 	width: 10%;
 	display: inline-block;
@@ -12,8 +21,9 @@ h2{
 	position: fixed;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(55, 55, 55, 1);
+	/*background-color: rgba(55, 55, 55, 1);*/
 	color: rgb(255,255,255);
+	background-size: cover;
 }
 
 .user-options{
@@ -23,6 +33,12 @@ h2{
 	padding-right: 10px;
 	text-align: left;
 }
+
+.user-options > p {
+	display: inline !important;
+	text-shadow: 2px 2px black;
+}
+
 
 #btn-deslogar{
 	width: 10%;
@@ -37,7 +53,7 @@ h2{
 }
 
 .allCards{
-	border: 2px solid white;
+	border: 1px solid white;
 }
 
 #allCardsList{
@@ -51,11 +67,11 @@ h2{
 }
 
 .deckCards{
-	border: 2px solid white;
+	border: 1px solid white;
 }
 
 .selectedCard{
-	border: 2px solid white;
+	border: 1px solid white;
 }
 
 #eachCard{

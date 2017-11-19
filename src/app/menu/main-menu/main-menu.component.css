@@ -7,7 +7,7 @@ h2{
 	position: fixed;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(55, 55, 55, 1);
+	background-size: cover;
 	color: rgb(255,255,255);
 }
 
@@ -18,6 +18,10 @@ h2{
 	padding-right: 10px;
 }
 
+.user-options > p {
+	display: inline !important;
+	text-shadow: 2px 2px black;
+}
 #btn-deslogar{
 	width: 10%;
 	float: right;
@@ -37,7 +41,12 @@ h2{
 
 .menu-play{
 	padding-top: 10%;
+	margin: 0 1.25rem 0 1.25rem;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 0px 0px 15px 15px; 
 	text-align: center;
+	background-color: rgba(55, 55, 55, 1);
 }
 
 #matchesList{

@@ -2,16 +2,16 @@
 	<div class="editDeckContainer">
 		<div class="row" style="height : 100%;">
 			<div class="user-options col-12">
-				Bem vindo, {{ authService.currentUserName }}
+				<p>Bem vindo, {{ authService.currentUserName }}</p>
 				<button id="btn-deslogar" type="button" class="btn btn-danger" (click)="logout()">Deslogar</button>
 			</div>
-			<div class="col-3 allCards">
+			<div class="col-3 allCards superior_tab">
 			  Todas as cartas
 			</div>
-			<div class="col-6 selectedCard">
+			<div class="col-6 selectedCard superior_tab">
 				Carta selecionada
 			</div>
-			<div class="col-3 deckCards">
+			<div class="col-3 deckCards superior_tab">
 			  Cartas do baralho
 			</div>
 			<div class="col-3 allCards" id="allCardsList">

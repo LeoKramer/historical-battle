@@ -1,6 +1,6 @@
 <div class = "deck-page" *ngIf="authService.currentUser">
 	<div class="user-options">
-		Bem vindo, {{ authService.currentUserName }}
+		<p>Bem vindo, {{ authService.currentUserName }}</p>
 		<button id="btn-gold" type="button" class="btn btn-info" (click)="goToBoosters()">Ouro: {{playerGold}}</button>
 		<button id="btn-deslogar" type="button" class="btn btn-danger" (click)="logout()">Deslogar</button>
 	</div>
