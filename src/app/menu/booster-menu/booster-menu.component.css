@@ -11,8 +11,7 @@ h2{
 .booster-page{
 	position: fixed;
 	width: 100%;
-	height: 100%;
-	background-color: rgba(55, 55, 55, 1);
+	height: 100%;background-size: cover;
 	color: rgb(255,255,255);
 }
 
@@ -124,4 +123,8 @@ img:hover{
 
 #repeatedCardImg{
 	opacity: 0.9;
+}
+
+.booster-deck{
+	height: 80vh;
 }

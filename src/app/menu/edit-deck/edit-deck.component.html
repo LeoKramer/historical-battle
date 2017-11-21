@@ -1,10 +1,10 @@
 <div class = "deck-page" *ngIf="authService.currentUser">
-	<div class="editDeckContainer">
-		<div class="row" style="height : 100%;">
-			<div class="user-options col-12">
-				<p>Bem vindo, {{ authService.currentUserName }}</p>
-				<button id="btn-deslogar" type="button" class="btn btn-danger" (click)="logout()">Deslogar</button>
-			</div>
+	<div class="user-options">
+		<p>Bem vindo, {{ authService.currentUserName }}</p>
+		<button id="btn-deslogar" type="button" class="btn btn-danger" (click)="logout()">Deslogar</button>
+	</div>
+	<div class="menu-base editDeckContainer">
+		<div class="row">
 			<div class="col-3 allCards superior_tab">
 			  Todas as cartas
 			</div>
@@ -14,28 +14,32 @@
 			<div class="col-3 deckCards superior_tab">
 			  Cartas do baralho
 			</div>
+		</div>
+		<div class="row">
 			<div class="col-3 allCards" id="allCardsList">
 				<div *ngFor="let name of accountCardsNamesList" (click)="selectAccountCard(name)" (mouseenter)="showCardInfo(name)" id="eachCard">
 			      {{ name }}
 			  </div>
 			</div>
-			<div class="col-6 selectedCard">
-				<div id="numberOfDeckCards">Cartas do baralho: {{numberOfDeckCards}}</div>
-				<div class="overlay-image-4 background-cover"><img [src]= "cardBase"></div>
-				<div class="overlay-image-3 background-cover"><img [src]= "cardCave"></div>
-				<div class="overlay-image-3 background-cover"><img [src]= "cardCurtain"></div>
-				<div class="overlay-image-2 background-cover"><img [src]= "cardVoid"></div>
-				<div class="overlay-image-2 background-cover"><img [src]= "cardChar" id="cardChar"></div>
-				<div class="overlay-image-1 background-cover"><img [src]= "cardCost"></div>
-				<div class="overlay-image-1 background-cover"><img [src]= "cardAttack"></div>
-				<div class="overlay-image-1 background-cover"><img [src]= "cardLife"></div>
-				<div class="overlay-image-1 background-cover"><img [src]= "cardName"></div>
-				<div id="effectsListDiv">
-					<div id="effectsList" *ngFor="let effect of cardEffectsNames" (mouseenter)="showCardEffect(effect)" (mouseleave)="hideCardEffect()">{{effect}}</div>
+			<div class="col-6 selectedCard" id="selectedCard">
+				<div>
+				    <div id="numberOfDeckCards">Cartas do baralho: {{numberOfDeckCards}}</div>
+    				<div class="overlay-image-4 background-cover"><img [src]= "cardBase"></div>
+    				<div class="overlay-image-3 background-cover"><img [src]= "cardCave"></div>
+    				<div class="overlay-image-3 background-cover"><img [src]= "cardCurtain"></div>
+    				<div class="overlay-image-2 background-cover"><img [src]= "cardVoid"></div>
+    				<div class="overlay-image-2 background-cover"><img [src]= "cardChar" id="cardChar"></div>
+    				<div class="overlay-image-1 background-cover"><img [src]= "cardCost"></div>
+    				<div class="overlay-image-1 background-cover"><img [src]= "cardAttack"></div>
+    				<div class="overlay-image-1 background-cover"><img [src]= "cardLife"></div>
+    				<div class="overlay-image-1 background-cover"><img [src]= "cardName"></div>
+    				<div id="effectsListDiv">
+    					<div id="effectsList" *ngFor="let effect of cardEffectsNames" (mouseenter)="showCardEffect(effect)" (mouseleave)="hideCardEffect()">{{effect}}</div>
+    				</div>
+    				<p-dialog [class] = "effectStatus" [header]="effectName" [(visible)]="displayEffect" id="effectBox">
+    				    {{cardEffectText}}
+    				</p-dialog>
 				</div>
-				<p-dialog [class] = "effectStatus" [header]="effectName" [(visible)]="displayEffect" id="effectBox">
-				    {{cardEffectText}}
-				</p-dialog>
 				<div id="buttons">
 					<button id="btn-cancelar" type="button" class="btn btn-danger" (click)="cancel()">Cancelar</button>
 					<button id="btn-salvar" type="button" class="btn btn-success" (click)="saveDeck()" [disabled] = "disableSaveDeck">Salvar</button>

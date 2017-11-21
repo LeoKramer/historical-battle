@@ -60,7 +60,7 @@ interface Effects{
 @Component({
   selector: 'booster-menu',
   templateUrl: './booster-menu.component.html',
-  styleUrls: ['./booster-menu.component.css']
+  styleUrls: ['./booster-menu.component.css', '../menu.component.css' ]
 })
 
 export class BoosterMenuComponent implements OnInit{

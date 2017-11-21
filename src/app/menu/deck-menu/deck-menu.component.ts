@@ -46,7 +46,7 @@ interface AccountCards{
 @Component({
   selector: 'deck-menu',
   templateUrl: './deck-menu.component.html',
-  styleUrls: ['./deck-menu.component.css']
+  styleUrls: ['./deck-menu.component.css', '../menu.component.css' ]
 })
 
 export class DeckMenuComponent implements OnInit{

@@ -61,7 +61,7 @@ interface Effects{
 @Component({
   selector: 'edit-deck',
   templateUrl: './edit-deck.component.html',
-  styleUrls: ['./edit-deck.component.css']
+  styleUrls: ['./edit-deck.component.css', '../menu.component.css' ]
 })
 
 export class EditDeckComponent implements OnInit{

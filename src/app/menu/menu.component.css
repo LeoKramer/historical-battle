@@ -1,0 +1,27 @@
+.nav-item{
+    background-color: rgb(55, 55, 55);
+    opacity: 0.75;
+}
+
+.menu-base{
+    margin: 0 1.25rem 0 1.25rem;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 0px 0px 15px 15px;
+    text-align: center;
+    background-color: rgba(55, 55, 55, 1);
+    opacity: 0.98;
+}
+
+.user-options{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: left;
+}
+
+.user-options > p {
+    display: inline !important;
+    text-shadow: 2px 2px black;
+}

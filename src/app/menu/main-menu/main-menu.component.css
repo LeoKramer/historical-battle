@@ -11,17 +11,6 @@ h2{
 	color: rgb(255,255,255);
 }
 
-.user-options{
-	padding-top: 10px;
-	padding-bottom: 10px;
-	padding-left: 10px;
-	padding-right: 10px;
-}
-
-.user-options > p {
-	display: inline !important;
-	text-shadow: 2px 2px black;
-}
 #btn-deslogar{
 	width: 10%;
 	float: right;
@@ -32,6 +21,7 @@ h2{
 	width : 20%;
 	margin-left: 19%;
 	margin-bottom: 0px;
+	align-content: center;
 }
 
 #btn-procurar-partida{
@@ -41,18 +31,13 @@ h2{
 
 .menu-play{
 	padding-top: 10%;
-	margin: 0 1.25rem 0 1.25rem;
-	border-width: 1px;
-	border-style: solid;
-	border-radius: 0px 0px 15px 15px; 
-	text-align: center;
-	background-color: rgba(55, 55, 55, 1);
 }
 
 #matchesList{
 	height: 40vh;
-	overflow: scroll;
-	border: 2px solid white;
+	overflow-y: auto;
+	overflow-x: hidden;
+	/*border: 2px solid white;*/
 }
 
 #matchesListBox{
@@ -80,4 +65,8 @@ h2{
 #eachMatch{
 	border: 2px solid white;
 	margin: 5px;
+}
+
+#matchesTitle {
+	border-bottom: 2px solid white;
 }
