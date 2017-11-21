@@ -141,7 +141,7 @@ export class EditDeckComponent implements OnInit{
 
     this.data.currentMessage.subscribe(message => {
       this.deck = message, 
-      console.log(this.deck);
+      
       this.user$.subscribe(user => {
         //salvar a lista de cartas do baralho
         for(var i = 0; i < user[message].length; i++){
@@ -151,7 +151,7 @@ export class EditDeckComponent implements OnInit{
         if(this.deckCardsIdsList[0] == "vazio")
           this.deckCardsIdsList = [];
 
-        console.log(this.deckCardsIdsList);
+        
 
         this.updateNumberOfDeckCards();
 
@@ -159,7 +159,7 @@ export class EditDeckComponent implements OnInit{
         for(var j = 0; j < user['accountCards'].length; j++){
           this.accountCardsIdsListTemp[j] = user['accountCards'][j];
         }
-        console.log(this.accountCardsIdsListTemp);
+        
 
         //tirar da lista de cartas da conta as cartas que já estão no baralho
         for(var x = 0; x < this.deckCardsIdsList.length; x++){
@@ -195,7 +195,7 @@ export class EditDeckComponent implements OnInit{
             }
           }
           
-          console.log(this.deckCardsNamesList);
+          
 
           for(var k = 0; k < this.accountCardsIdsList.length; k++){
             for(var y = 0; y < cards.length; y++){
@@ -207,7 +207,7 @@ export class EditDeckComponent implements OnInit{
             this.accountCardsNamesList[k] = cards[offset]['name'];
           }
 
-          console.log(this.accountCardsNamesList);
+          
 
           this.deckCardsNamesList = this.deckCardsNamesList.sort((a, b) => {
             if(a < b) return -1;
@@ -231,7 +231,7 @@ export class EditDeckComponent implements OnInit{
             this.accountCardsList[k] = cards[offset];
           }
 
-          console.log(this.accountCardsList);
+          
 
           for(var k = 0; k < this.deckCardsIdsList.length; k++){
             for(var y = 0; y < cards.length; y++){
@@ -243,7 +243,7 @@ export class EditDeckComponent implements OnInit{
             this.deckCardsList[k] = cards[offset];
           }
 
-          console.log(this.deckCardsList);
+          
         });
       });
     });
@@ -334,7 +334,7 @@ export class EditDeckComponent implements OnInit{
   }
 
   selectDeckCard(name : string) : void{
-    console.log(name);
+    
     //remover carta do baralho
     var temp : Array<string> = [];
     for(var x = 0; x < this.deckCardsNamesList.length; x++){

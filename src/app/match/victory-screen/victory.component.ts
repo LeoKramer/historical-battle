@@ -31,22 +31,22 @@ export class VictoryComponent implements OnInit {
   user$ : Observable<Users>;
 
   constructor(public authService: AuthService, private afs : AngularFirestore, private router: Router, private data: DataService){
-    this.userDoc = this.afs.doc('users/'+this.authService.currentUserId);
-    this.user$ = this.userDoc.valueChanges();
+    //this.userDoc = this.afs.doc('users/'+this.authService.currentUserId);
+    //this.user$ = this.userDoc.valueChanges();
 
-    this.data.currentMessage.subscribe(message => {
-      console.log("match "+ message);
-      console.log(this.authService.currentUserId);
+    //this.data.currentMessage.subscribe(message => {
+      //console.log("match "+ message);
+      //console.log(this.authService.currentUserId);
 
-      this.afs.collection('matches').doc(message).delete();
+      //this.afs.collection('matches').doc(message).delete();
 
-      this.user$.subscribe(data => {
-        var newGold = data['gold'] + 15;
-        this.afs.collection('users').doc(this.authService.currentUserId).update({'gold' : newGold});
+      //this.user$.subscribe(data => {
+        //var newGold = data['gold'] + 15;
+        //this.afs.collection('users').doc(this.authService.currentUserId).update({'gold' : newGold});
         setTimeout(() => this.router.navigate(['/menu']), 5000);
-      });
+      //});
       
-    });
+    //});
   }
 
   ngOnInit() {

@@ -328,7 +328,7 @@ export class MatchComponent implements OnInit {
     this.user$ = this.userDoc.valueChanges();
 
     this.data.currentMessage.subscribe(message => {
-      console.log(message);
+      
       this.matchId = message;
       this.matchDoc = this.afs.doc('matches/'+ message);
       this.match$ = this.matchDoc.valueChanges();
@@ -870,7 +870,7 @@ export class MatchComponent implements OnInit {
         this.user$.subscribe(data => {
           this.gold = data['gold'];
           var defaultdeck : string = data['defaultDeck'];
-          console.log(data[defaultdeck]);
+          
           for(var x = 0; x < data[defaultdeck].length; x++){
             this.deckCardsIds[x] = data[defaultdeck][x];
           }
@@ -890,9 +890,7 @@ export class MatchComponent implements OnInit {
               }
             }
 
-            //gerar as cartas da partida
-            console.log(this.cardsList);
-            console.log(this.deckCards);
+            
 
             //gerar as cartas da partida
             this.tempDeckCards = this.deckCards;
@@ -907,7 +905,7 @@ export class MatchComponent implements OnInit {
             }
 
             //coloque as cartas na mão do jogador
-            console.log(this.matchCards);
+            
             if(this.turn == 1){
               this.playerHand1CardChar = 'assets/images/card/chars/'+this.matchCards[0]['id']+'.png';
               this.playerHand1CardCost = 'assets/images/card/costs/'+this.matchCards[0]['cost']+'.png';
@@ -1037,7 +1035,7 @@ export class MatchComponent implements OnInit {
 
   checkHandCardsThatCanBeCasted(){
     if(this.currentPlayer != "Seu turno"){
-      console.log("nao é seu turno de jogar");
+      
       this.cardOnPlayerHand1CanCast = "cantCast";
       this.cardOnPlayerHand2CanCast = "cantCast";
       this.cardOnPlayerHand3CanCast = "cantCast";
@@ -1132,7 +1130,7 @@ export class MatchComponent implements OnInit {
                               'rarity' : this.cardsOnHand[field]['rarity'], 'Effects' : this.cardsOnHand[field]['effects'],
                               'EffectsOver' : ["vazio"]};
 
-      console.log(fieldSpacePosition);
+      
 
       this.playerTable[fieldSpacePosition] = handCard;
 
@@ -1639,13 +1637,11 @@ export class MatchComponent implements OnInit {
       this.cardsThatAttackedThisTurn = [0, 0, 0, 0, 0];
 
       if(this.whoIsThisPlayer == "Player1"){
-        console.log("next turn of "+this.matchPlayer2);
-        console.log(this.turn++);
+        
         this.afs.collection('matches').doc(this.matchId).update({'currentPlayer' : this.matchPlayer2});
       }
       else if(this.whoIsThisPlayer == "Player2"){
-        console.log("next turn of "+this.matchPlayer1);
-        console.log(this.turn++);
+        
         this.afs.collection('matches').doc(this.matchId).update({'turn' : this.turn++, 'currentPlayer' : this.matchPlayer1});
       }
 
