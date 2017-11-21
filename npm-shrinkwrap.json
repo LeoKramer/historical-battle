@@ -1,0 +1,171 @@
+{
+  "name": "historical-battle",
+  "version": "0.0.0",
+  "dependencies": {
+    "@angular/animations": {
+      "version": "4.4.6",
+      "from": "@angular/animations@>=4.4.5 <5.0.0",
+      "resolved": "https://registry.npmjs.org/@angular/animations/-/animations-4.4.6.tgz"
+    },
+    "@angular/common": {
+      "version": "4.4.6",
+      "from": "@angular/common@>=4.2.4 <5.0.0",
+      "resolved": "https://registry.npmjs.org/@angular/common/-/common-4.4.6.tgz"
+    },
+    "@angular/compiler": {
+      "version": "4.4.6",
+      "from": "@angular/compiler@>=4.2.4 <5.0.0",
+      "resolved": "https://registry.npmjs.org/@angular/compiler/-/compiler-4.4.6.tgz"
+    },
+    "@angular/core": {
+      "version": "4.4.6",
+      "from": "@angular/core@>=4.2.4 <5.0.0",
+      "resolved": "https://registry.npmjs.org/@angular/core/-/core-4.4.6.tgz"
+    },
+    "@angular/forms": {
+      "version": "4.4.6",
+      "from": "@angular/forms@>=4.2.4 <5.0.0",
+      "resolved": "https://registry.npmjs.org/@angular/forms/-/forms-4.4.6.tgz"
+    },
+    "@angular/http": {
+      "version": "4.4.6",
+      "from": "@angular/http@>=4.2.4 <5.0.0",
+      "resolved": "https://registry.npmjs.org/@angular/http/-/http-4.4.6.tgz"
+    },
+    "@angular/platform-browser": {
+      "version": "4.4.6",
+      "from": "@angular/platform-browser@>=4.2.4 <5.0.0",
+      "resolved": "https://registry.npmjs.org/@angular/platform-browser/-/platform-browser-4.4.6.tgz"
+    },
+    "@angular/platform-browser-dynamic": {
+      "version": "4.4.6",
+      "from": "@angular/platform-browser-dynamic@>=4.2.4 <5.0.0",
+      "resolved": "https://registry.npmjs.org/@angular/platform-browser-dynamic/-/platform-browser-dynamic-4.4.6.tgz"
+    },
+    "@angular/router": {
+      "version": "4.4.6",
+      "from": "@angular/router@>=4.2.4 <5.0.0",
+      "resolved": "https://registry.npmjs.org/@angular/router/-/router-4.4.6.tgz"
+    },
+    "@firebase/app": {
+      "version": "0.1.2",
+      "from": "@firebase/app@>=0.1.2 <0.2.0",
+      "resolved": "https://registry.npmjs.org/@firebase/app/-/app-0.1.2.tgz"
+    },
+    "@firebase/auth": {
+      "version": "0.2.2",
+      "from": "@firebase/auth@>=0.2.2 <0.3.0",
+      "resolved": "https://registry.npmjs.org/@firebase/auth/-/auth-0.2.2.tgz"
+    },
+    "@firebase/database": {
+      "version": "0.1.3",
+      "from": "@firebase/database@>=0.1.3 <0.2.0",
+      "resolved": "https://registry.npmjs.org/@firebase/database/-/database-0.1.3.tgz"
+    },
+    "@firebase/firestore": {
+      "version": "0.1.4",
+      "from": "@firebase/firestore@>=0.1.4 <0.2.0",
+      "resolved": "https://registry.npmjs.org/@firebase/firestore/-/firestore-0.1.4.tgz"
+    },
+    "@firebase/messaging": {
+      "version": "0.1.3",
+      "from": "@firebase/messaging@>=0.1.3 <0.2.0",
+      "resolved": "https://registry.npmjs.org/@firebase/messaging/-/messaging-0.1.3.tgz"
+    },
+    "@firebase/polyfill": {
+      "version": "0.1.2",
+      "from": "@firebase/polyfill@>=0.1.2 <0.2.0",
+      "resolved": "https://registry.npmjs.org/@firebase/polyfill/-/polyfill-0.1.2.tgz"
+    },
+    "@firebase/storage": {
+      "version": "0.1.2",
+      "from": "@firebase/storage@>=0.1.2 <0.2.0",
+      "resolved": "https://registry.npmjs.org/@firebase/storage/-/storage-0.1.2.tgz"
+    },
+    "@firebase/util": {
+      "version": "0.1.2",
+      "from": "@firebase/util@>=0.1.2 <0.2.0",
+      "resolved": "https://registry.npmjs.org/@firebase/util/-/util-0.1.2.tgz"
+    },
+    "@firebase/webchannel-wrapper": {
+      "version": "0.2.4",
+      "from": "@firebase/webchannel-wrapper@>=0.2.4 <0.3.0",
+      "resolved": "https://registry.npmjs.org/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.2.4.tgz"
+    },
+    "angularfire2": {
+      "version": "5.0.0-rc.3",
+      "from": "angularfire2@5.0.0-rc.3",
+      "resolved": "https://registry.npmjs.org/angularfire2/-/angularfire2-5.0.0-rc.3.tgz"
+    },
+    "core-js": {
+      "version": "2.5.1",
+      "from": "core-js@>=2.4.1 <3.0.0",
+      "resolved": "https://registry.npmjs.org/core-js/-/core-js-2.5.1.tgz"
+    },
+    "dom-storage": {
+      "version": "2.0.2",
+      "from": "dom-storage@>=2.0.2 <3.0.0",
+      "resolved": "https://registry.npmjs.org/dom-storage/-/dom-storage-2.0.2.tgz"
+    },
+    "faye-websocket": {
+      "version": "0.11.1",
+      "from": "faye-websocket@0.11.1",
+      "resolved": "https://registry.npmjs.org/faye-websocket/-/faye-websocket-0.11.1.tgz"
+    },
+    "firebase": {
+      "version": "4.6.2",
+      "from": "firebase@>=4.6.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/firebase/-/firebase-4.6.2.tgz"
+    },
+    "http-parser-js": {
+      "version": "0.4.9",
+      "from": "http-parser-js@>=0.4.0",
+      "resolved": "https://registry.npmjs.org/http-parser-js/-/http-parser-js-0.4.9.tgz"
+    },
+    "primeng": {
+      "version": "4.3.0",
+      "from": "primeng@>=4.3.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/primeng/-/primeng-4.3.0.tgz"
+    },
+    "promise-polyfill": {
+      "version": "6.0.2",
+      "from": "promise-polyfill@>=6.0.2 <7.0.0",
+      "resolved": "https://registry.npmjs.org/promise-polyfill/-/promise-polyfill-6.0.2.tgz"
+    },
+    "rxjs": {
+      "version": "5.5.2",
+      "from": "rxjs@>=5.4.2 <6.0.0",
+      "resolved": "https://registry.npmjs.org/rxjs/-/rxjs-5.5.2.tgz"
+    },
+    "symbol-observable": {
+      "version": "1.0.4",
+      "from": "symbol-observable@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/symbol-observable/-/symbol-observable-1.0.4.tgz"
+    },
+    "tslib": {
+      "version": "1.8.0",
+      "from": "tslib@>=1.7.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/tslib/-/tslib-1.8.0.tgz"
+    },
+    "websocket-driver": {
+      "version": "0.7.0",
+      "from": "websocket-driver@>=0.5.1",
+      "resolved": "https://registry.npmjs.org/websocket-driver/-/websocket-driver-0.7.0.tgz"
+    },
+    "websocket-extensions": {
+      "version": "0.1.3",
+      "from": "websocket-extensions@>=0.1.1",
+      "resolved": "https://registry.npmjs.org/websocket-extensions/-/websocket-extensions-0.1.3.tgz"
+    },
+    "xmlhttprequest": {
+      "version": "1.8.0",
+      "from": "xmlhttprequest@>=1.8.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/xmlhttprequest/-/xmlhttprequest-1.8.0.tgz"
+    },
+    "zone.js": {
+      "version": "0.8.18",
+      "from": "zone.js@>=0.8.14 <0.9.0",
+      "resolved": "https://registry.npmjs.org/zone.js/-/zone.js-0.8.18.tgz"
+    }
+  }
+}
