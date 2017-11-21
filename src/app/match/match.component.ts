@@ -368,7 +368,10 @@ export class MatchComponent implements OnInit {
             }
 
             //verifique se algum jogador perdeu
+            this.data.changeMessage(this.matchId);
             var player1Life = data['player1Life'];
+            var player2Life = data['player2Life'];
+
             if(player1Life <= 0){
               if(data['player1'] == this.authService.currentUserId){
                 //tela de derrota
@@ -377,22 +380,16 @@ export class MatchComponent implements OnInit {
               }
               else{
                 //tela de vitória
-                this.afs.collection('users').doc(this.authService.currentUserId).update({'gold' : this.gold+15});
-                this.data.changeMessage(this.matchId);
                 this.router.navigate(['/victory']);
               }
             }
-
-            var player2Life = data['player2Life'];
-            if(player2Life <= 0){
+            else if(player2Life <= 0){
               if(data['player2'] == this.authService.currentUserId){
                 //tela de derrota
                 this.router.navigate(['/defeat']);
               }
               else{
                 //tela de vitória
-                this.afs.collection('users').doc(this.authService.currentUserId).update({'gold' : this.gold+15});
-                this.data.changeMessage(this.matchId);
                 this.router.navigate(['/victory']);
               }
             }
