@@ -25,3 +25,7 @@
     display: inline !important;
     text-shadow: 2px 2px black;
 }
+
+.nav-tabs {
+    border-bottom: none;
+}
